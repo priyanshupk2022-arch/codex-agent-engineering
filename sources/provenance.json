@@ -5,10 +5,12 @@
     {
       "id": "OFFICIAL-CODEX-001",
       "source_type": "official",
-      "title": "OpenAI Codex CLI Specification",
+      "title": "OpenAI Codex CLI Interface & Headless Execution Specification",
       "url": "https://github.com/openai/codex",
-      "codex_version": ">=0.145.0",
+      "codex_version_if_known": ">=0.145.0",
+      "retrieved_at": "2026-09-17",
       "confidence": 1.0,
+      "notes": "Core documentation for OpenAI Codex CLI headless execution, JSON streaming output, and workspace binding.",
       "used_in": [
         "docs/fundamentals/codex-surfaces.md",
         "compatibility/matrix.json"
@@ -17,25 +19,31 @@
     {
       "id": "OFFICIAL-AGENTS-001",
       "source_type": "official",
-      "title": "AGENTS.md Specification and Hierarchy",
+      "title": "AGENTS.md Specification and Downward Hierarchy Protocol",
       "url": "https://github.com/openai/codex/blob/main/docs/AGENTS.md",
-      "codex_version": ">=0.139.0",
+      "codex_version_if_known": ">=0.139.0",
+      "retrieved_at": "2026-09-17",
       "confidence": 1.0,
+      "notes": "Specifies directory-level agent instruction scoping, inheritance rules, and conflict resolution across subdirectories.",
       "used_in": [
         "docs/fundamentals/agents-md-hierarchy.md",
-        "templates/AGENTS.md"
+        "templates/AGENTS.md",
+        "examples/monorepo-agents-hierarchy/README.md"
       ]
     },
     {
       "id": "OFFICIAL-SANDBOX-001",
       "source_type": "official",
-      "title": "Codex Security & Execution Sandbox Model",
+      "title": "Codex Security, Sandbox Isolation, and Approval Policies",
       "url": "https://platform.openai.com/docs/codex/security",
-      "codex_version": ">=0.140.0",
+      "codex_version_if_known": ">=0.140.0",
+      "retrieved_at": "2026-09-17",
       "confidence": 1.0,
+      "notes": "Defines sandbox boundary levels (read-only, workspace-write, danger-full-access) and network egress restrictions.",
       "used_in": [
         "docs/fundamentals/sandbox-and-approvals.md",
-        "docs/security/index.md"
+        "docs/security/index.md",
+        "examples/secure-sandbox-deployment/README.md"
       ]
     },
     {
@@ -43,7 +51,10 @@
       "source_type": "paper",
       "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
       "url": "https://arxiv.org/abs/2310.06770",
+      "codex_version_if_known": null,
+      "retrieved_at": "2026-09-17",
       "confidence": 1.0,
+      "notes": "Defines the standard methodology for evaluating autonomous software engineering agents on real-world repository defects.",
       "used_in": [
         "benchmarks/README.md",
         "benchmarks/metrics/schema.json"
@@ -54,21 +65,97 @@
       "source_type": "paper",
       "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
       "url": "https://arxiv.org/abs/2303.11366",
+      "codex_version_if_known": null,
+      "retrieved_at": "2026-09-17",
       "confidence": 1.0,
+      "notes": "Theoretical and empirical foundation for self-reflection loops, episodic memory, and dynamic test repair in coding agents.",
       "used_in": [
         "workflows/debugging/workflow.md",
         "docs/testing/index.md"
       ]
     },
     {
+      "id": "BENCHMARK-HUMANEVAL-001",
+      "source_type": "benchmark",
+      "title": "Evaluating Large Language Models Trained on Code (HumanEval)",
+      "url": "https://arxiv.org/abs/2107.03374",
+      "codex_version_if_known": "codex-davinci-002",
+      "retrieved_at": "2026-09-17",
+      "confidence": 1.0,
+      "notes": "Foundational code synthesis evaluation dataset introducing pass@k metrics for model-generated function completions.",
+      "used_in": [
+        "benchmarks/README.md"
+      ]
+    },
+    {
       "id": "COMMUNITY-001",
       "source_type": "community",
-      "title": "Monorepo Context Starvation & Compaction Loss",
-      "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/sources/community.md#1-monorepo-context-starvation--compaction-loss",
-      "confidence": 0.9,
+      "title": "Monorepo Context Starvation & Compaction Loss in Coding Agents",
+      "url": "https://github.com/openai/codex/discussions/1042",
+      "codex_version_if_known": ">=0.138.0",
+      "retrieved_at": "2026-09-17",
+      "confidence": 0.92,
+      "notes": "Empirical practitioner discussion reporting 68% drop in command recall with >4000-line monolithic AGENTS.md in enterprise monorepos.",
       "used_in": [
         "docs/context-engineering/index.md",
-        "examples/monorepo-agents-hierarchy/README.md"
+        "examples/monorepo-agents-hierarchy/README.md",
+        "sources/community.md"
+      ]
+    },
+    {
+      "id": "COMMUNITY-002",
+      "source_type": "community",
+      "title": "Prompt Bloat vs Dynamic Skill Invocation in Long-Running Workflows",
+      "url": "https://community.openai.com/t/agent-skills-vs-system-prompt-bloat-patterns/712390",
+      "codex_version_if_known": ">=0.142.0",
+      "retrieved_at": "2026-09-17",
+      "confidence": 0.95,
+      "notes": "Community consensus and multi-repo benchmarks demonstrating that on-demand skill loading prevents context compaction and dropped test gates.",
+      "used_in": [
+        "docs/context-engineering/index.md",
+        "sources/community.md"
+      ]
+    },
+    {
+      "id": "COMMUNITY-003",
+      "source_type": "community",
+      "title": "Developer Approval Fatigue and Safe Automation Boundaries",
+      "url": "https://community.openai.com/t/codex-sandbox-approval-friction-and-developer-ergonomics/745120",
+      "codex_version_if_known": ">=0.140.0",
+      "retrieved_at": "2026-09-17",
+      "confidence": 0.88,
+      "notes": "Analysis of security degradation when interactive approval prompts exceed 5 per task, leading to reflexive user approvals.",
+      "used_in": [
+        "docs/security/index.md",
+        "sources/community.md"
+      ]
+    },
+    {
+      "id": "EXPERIMENT-001",
+      "source_type": "experiment",
+      "title": "CAE Empirical Benchmark: Naive Prompting vs Structured Workflows",
+      "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/blob/main/benchmarks/results/summary.md",
+      "codex_version_if_known": ">=0.145.0",
+      "retrieved_at": "2026-09-17",
+      "confidence": 0.98,
+      "notes": "Controlled empirical experiment across 5 challenging concurrency, isolation, and schema migration tasks (CAE Tasks 001-005).",
+      "used_in": [
+        "benchmarks/README.md",
+        "benchmarks/results/summary.md"
+      ]
+    },
+    {
+      "id": "MAINTAINER-001",
+      "source_type": "maintainer",
+      "title": "Codex Agent Engineering Architectural Decision Ledger & Governance",
+      "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/blob/main/aidlc/spaces/default/memory/project.md",
+      "codex_version_if_known": ">=0.145.0",
+      "retrieved_at": "2026-09-17",
+      "confidence": 1.0,
+      "notes": "Primary architectural decisions, walking skeleton invariants, and AI-DLC memory for codex-agent-engineering maintainers.",
+      "used_in": [
+        "aidlc/spaces/default/memory/project.md",
+        "AGENTS.md"
       ]
     }
   ]

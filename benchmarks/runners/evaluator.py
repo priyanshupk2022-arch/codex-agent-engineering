@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 import json
 import shutil
@@ -42,11 +42,16 @@ class TaskEvaluator:
 
             cmd = [sys.executable, "-m", "pytest", str(temp_path / test_file), "-q"]
             start = time.time()
-            proc = subprocess.run(cmd, cwd=temp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            duration = time.time() - start
-
-            passed = (proc.returncode == 0)
-            output = proc.stdout + "\n" + proc.stderr
-            pass_rate = 1.0 if passed else 0.0
+            try:
+                proc = subprocess.run(cmd, cwd=temp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=15)
+                duration = time.time() - start
+                passed = (proc.returncode == 0)
+                output = proc.stdout + "\n" + proc.stderr
+                pass_rate = 1.0 if passed else 0.0
+            except subprocess.TimeoutExpired as exc:
+                duration = time.time() - start
+                passed = False
+                output = f"Execution timed out after 15.0s: {exc}"
+                pass_rate = 0.0
 
             return passed, pass_rate, duration, output

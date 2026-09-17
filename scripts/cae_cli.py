@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -12,8 +12,11 @@ import json
 def cmd_benchmark(args):
     from benchmarks.runners.runner import run_suite
     mode = args.mode or "reference"
-    print(f"[*] Running CAE Benchmark Suite in mode: {mode}")
-    report = run_suite(mode=mode, task_filter=args.task)
+    task_filter = args.task
+    if not task_filter and args.suite and args.suite not in ("all", "default", "suite-v1"):
+        task_filter = args.suite
+    print(f"[*] Running CAE Benchmark Suite ({args.suite or 'default'}) in mode: {mode}")
+    report = run_suite(mode=mode, task_filter=task_filter)
     
     if args.output:
         out_path = Path(args.output)
@@ -58,6 +61,7 @@ def main():
     # benchmark
     bm_parser = subparsers.add_parser("benchmark", help="Run reproducible benchmarks")
     bm_parser.add_argument("action", choices=["run", "list"], help="Action to perform")
+    bm_parser.add_argument("suite", nargs="?", default="default", help="Suite identifier or task filter (e.g. suite-v1, cae-task-001)")
     bm_parser.add_argument("--mode", choices=["reference", "buggy"], default="reference", help="Evaluation mode")
     bm_parser.add_argument("--task", type=str, default=None, help="Filter by task ID")
     bm_parser.add_argument("--output", "-o", type=str, default=None, help="Output JSON path")

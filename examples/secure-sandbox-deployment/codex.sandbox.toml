@@ -1,0 +1,12 @@
+# Hardened Production Sandbox Configuration
+# Documentation: docs/fundamentals/sandbox-and-approvals.md
+
+[approval]
+policy = "on-request"
+
+[sandbox]
+mode = "workspace-write"
+allowed_network_hosts = [
+  "pypi.org",
+  "github.com"
+]

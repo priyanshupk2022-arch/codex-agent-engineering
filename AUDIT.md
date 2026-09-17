@@ -1,9 +1,9 @@
 # Final Open Source Audit Report (AUDIT.md)
 
 - **Repository**: `codex-agent-engineering`
-- **Release Version**: `0.1.0`
+- **Release Version**: `0.1.1`
 - **Audit Date**: 2026-09-17
-- **Audit Standard**: Production Open-Source Release Gate
+- **Audit Standard**: Production Open-Source Release Gate (Adversarial Review Hardened)
 
 ---
 
@@ -12,36 +12,40 @@
    - 6 foundational guides in `docs/fundamentals/`: Codex Surfaces, AGENTS.md Hierarchy, Sandbox & Approvals, MCP Integration, Spec-Driven Development (GitHub Spec Kit), and AI-DLC Lifecycle.
    - 10 in-depth engineering disciplines: Context Engineering, Planning, Implementation, Debugging, Testing, Code Review, Security, Git, Release Engineering, and Orchestration.
 2. **Reusable Codex Skills (`skills/`)**:
-   - 9 production-grade skills conforming to standard `SKILL.md` schema with runnable scripts, references, and failure handling: `repo-audit`, `deep-research`, `implementation`, `debugging`, `test-engineering`, `code-review`, `security-review`, `release-engineering`, and `documentation`.
+   - 9 production-grade skills conforming to standard `SKILL.md` schema with executable Python automation scripts, multi-phase checklists (>1,300 bytes), and rich sample outputs: `repo-audit`, `deep-research`, `implementation`, `debugging`, `test-engineering`, `code-review`, `security-review`, `release-engineering`, and `documentation`.
 3. **Structured Engineering Workflows (`workflows/`)**:
    - 10 engineering procedures with explicit ordered actions, verification protocols, failure handling, and Vanilla Codex comparisons: `feature`, `bugfix`, `refactor`, `security-audit`, `repository-audit`, `deep-research`, `incident-response`, `testing`, `pr-review`, and `release`.
 4. **Reproducible Benchmark Suite v1 (`benchmarks/`)**:
    - 5 deterministic tasks covering critical failure modes: Concurrency Deadlock (`cae-task-001`), SQL Injection (`cae-task-002`), Async Resource Leak (`cae-task-003`), Race Condition (`cae-task-004`), and Schema Migration (`cae-task-005`).
-   - Unified runner (`benchmarks/runners/runner.py`), task evaluator (`evaluator.py`), metric schema (`metrics/schema.json`), and metric collector (`collector.py`).
+   - Unified runner (`benchmarks/runners/runner.py`), task evaluator (`evaluator.py`), metric schema (`metrics/schema.json`), and metric collector (`collector.py`). Evaluator hardened with subprocess timeouts.
 5. **Empirical Experiments Registry (`experiments/`)**:
    - 4 controlled experiments (EXP-001 through EXP-004) covering token budgeting, approval fatigue, MCP tool count, and Spec Kit SDD.
 6. **Real-World Case Studies (`case-studies/`)**:
-   - 3 technical post-mortems covering legacy modernization, incident RCA under traffic surges, and supply-chain containment.
-7. **Unified CLI & Automation Tooling (`scripts/`)**:
+   - 3 rigorous 8-part engineering post-mortems covering legacy modernization, incident RCA under traffic surges, and supply-chain containment, complete with comparison benchmark tables and reusable rules for `AGENTS.md`.
+7. **Complete Production Examples (`examples/`)**:
+   - 4 fully implemented, runnable examples with manifests, implementations, and independent pytest suites (14 tests total): `full-stack-feature`, `mcp-tool-integration`, `monorepo-agents-hierarchy`, and `secure-sandbox-deployment`.
+8. **Unified CLI & Automation Tooling (`scripts/`)**:
    - `cae_cli.py`: Unified CLI for benchmark execution, test running, skill validation, and repository doctor diagnostics.
-   - `validate_skills.py`: Automated schema validator.
+   - `validate_skills.py`: Automated schema validator enforcing script and reference presence.
    - `check_links.py`: Relative markdown link integrity verifier.
    - `maintenance_scanner.py`: Continuous repository health scanner.
-8. **Ecosystem Integrations**:
+9. **Ecosystem Integrations**:
    - GitHub Spec Kit (`specify`) configured in `.specify/` and `.agents/skills/`.
-   - AI-DLC (`aidlc`) configured with Codex CLI harness in `.codex/` and `aidlc/`.
-9. **Open-Source Governance & CI**:
-   - MIT License, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, SUPPORT.md, CHANGELOG.md, ROADMAP.md.
-   - GitHub Actions CI matrix workflows for test runs, weekly benchmarks, compatibility probes, and maintenance scans.
+   - AI-DLC (`aidlc`) configured with Codex CLI harness in `.codex/` and `aidlc/`, using managed sentinel block markers and populated project memory.
+10. **Open-Source Governance & CI**:
+    - MIT License, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, SUPPORT.md, CHANGELOG.md, ROADMAP.md.
+    - GitHub Actions CI matrix workflows for test runs, weekly benchmarks, compatibility probes, and maintenance scans.
 
 ---
 
 ## 2. What Was Verified
-- **Unit & Integration Test Suite**: 8/8 tests passing in 3.19s with `pytest tests/ -v`.
+- **Unit & Integration Test Suite**: 24/24 tests passing (10/10 root pytest in `tests/` + 14/14 examples pytest in `examples/`).
 - **Benchmark Suite**: 5/5 tasks passing (100% pass rate) in reference mode; 5/5 tasks failing (100% detection rate) in buggy mode.
-- **Skill Schemas**: 9/9 skills verified with all required headings present via `validate_skills.py`.
-- **Link Integrity**: 94/94 markdown files verified with 0 broken relative links via `check_links.py`.
+- **Skill Schemas**: 9/9 skills verified with all required headings, Python scripts, and checklists via `validate_skills.py`.
+- **Link Integrity**: 102/102 markdown files verified with 0 broken relative links via `check_links.py`.
 - **Repository Health**: Clean bill of health reported by `cae doctor` (0 issues).
+- **AI-DLC Integrity**: `aidlc doctor` passes with 0 problems and 0 configuration conflicts.
+- **GitHub Spec Kit Integrity**: `specify check` passes and detects system runtime.
 
 ---
 
@@ -56,7 +60,7 @@
 - **Total Tasks**: 5
 - **Reference Pass Rate**: 100.0% (5/5)
 - **Buggy Detection Rate**: 100.0% (5/5)
-- **Mean Reference Duration**: 1.27s per task
+- **Mean Reference Duration**: 1.30s per task
 - **Results File**: `benchmarks/results/cae-benchmark-suite-v1.json`
 
 ---
@@ -78,8 +82,9 @@
 ---
 
 ## 7. Source & Provenance Status
-- **Records Count**: 6 primary provenance entries in `sources/provenance.json`.
-- **Taxonomy**: Strictly distinguishes between official OpenAI documentation, academic literature (SWE-bench, Reflexion), empirical experiments, and community findings.
+- **Records Count**: 11 primary provenance entries in `sources/provenance.json`.
+- **Taxonomy**: Strictly distinguishes between official OpenAI documentation, academic literature (SWE-bench, Reflexion, HumanEval), empirical experiments, and community findings.
+- **Integrity**: Zero self-referential external URLs; all records contain notes, retrieved_at timestamps, confidence scores, and version boundaries.
 
 ---
 

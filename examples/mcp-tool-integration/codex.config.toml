@@ -1,0 +1,13 @@
+# Codex MCP Integration Configuration
+# Documentation: docs/fundamentals/mcp-integration.md
+
+[approval]
+policy = "on-request"
+
+[sandbox]
+mode = "workspace-write"
+
+[mcp_servers.sqlite]
+command = "python"
+args = ["examples/mcp-tool-integration/mcp_server_sqlite.py", "--db", ":memory:"]
+startup_timeout_sec = 15

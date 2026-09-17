@@ -20,3 +20,16 @@ def test_single_name_legacy():
 def test_missing_name_raises():
     with pytest.raises(ValueError):
         UserParser.parse_user({"email": "ghost@example.com"})
+
+def test_whitespace_normalization():
+    payload = {"full_name": "  Ada    Lovelace  ", "email": "ada@example.com"}
+    result = UserParser.parse_user(payload)
+    assert result["first_name"] == "Ada"
+    assert result["last_name"] == "Lovelace"
+
+def test_none_values_handling():
+    payload = {"first_name": "Alan", "last_name": None, "email": None}
+    result = UserParser.parse_user(payload)
+    assert result["first_name"] == "Alan"
+    assert result["last_name"] == ""
+    assert result["email"] == ""

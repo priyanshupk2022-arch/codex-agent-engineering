@@ -33,8 +33,31 @@ def validate_skills(skills_dir: Path) -> bool:
         if missing:
             print(f"[FAIL] {s.name}: Missing required headings: {missing}")
             all_valid = False
-        else:
-            print(f"[OK] {s.name}")
+            continue
+
+        # Validate scripts presence
+        scripts_dir = s / "scripts"
+        scripts = list(scripts_dir.glob("*.py")) if scripts_dir.exists() else []
+        if not scripts:
+            print(f"[FAIL] {s.name}: Missing executable python script in scripts/")
+            all_valid = False
+            continue
+
+        # Validate references checklist
+        checklist = s / "references" / "checklist.md"
+        if not checklist.exists() or len(checklist.read_text(encoding="utf8").strip()) < 200:
+            print(f"[FAIL] {s.name}: Missing or trivial references/checklist.md (<200 bytes)")
+            all_valid = False
+            continue
+
+        # Validate sample output example
+        sample_output = s / "examples" / "sample-output.md"
+        if not sample_output.exists() or len(sample_output.read_text(encoding="utf8").strip()) < 200:
+            print(f"[FAIL] {s.name}: Missing or trivial examples/sample-output.md (<200 bytes)")
+            all_valid = False
+            continue
+
+        print(f"[OK] {s.name} (SKILL.md + {scripts[0].name} + checklist + sample-output)")
 
     return all_valid
 

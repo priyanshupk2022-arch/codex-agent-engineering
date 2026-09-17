@@ -9,6 +9,12 @@ def test_single_order():
     assert inv.order(10) is False
     assert inv.stock == 7
 
+def test_invalid_quantity():
+    inv = InventoryService(10)
+    assert inv.order(0) is False
+    assert inv.order(-5) is False
+    assert inv.stock == 10
+
 def test_concurrent_orders_no_oversell():
     initial_stock = 20
     inv = InventoryService(initial_stock)

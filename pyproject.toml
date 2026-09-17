@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codex-agent-engineering"
+version = "0.1.1"
+description = "Community-maintained, evidence-backed knowledge and artifact layer for OpenAI Codex agent engineering"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Codex Agent Engineering Maintainers" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+cae = "scripts.cae_cli:main"
+
+[project.urls]
+Homepage = "https://github.com/priyanshupk2022-arch/codex-agent-engineering"
+Repository = "https://github.com/priyanshupk2022-arch/codex-agent-engineering.git"
+Issues = "https://github.com/priyanshupk2022-arch/codex-agent-engineering/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["benchmarks*", "scripts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = [
+    "benchmarks/tasks",
+    ".agents",
+    ".codex",
+    ".specify",
+    "aidlc",
+    "examples",
+    "build",
+    "dist"
+]
+asyncio_mode = "auto"

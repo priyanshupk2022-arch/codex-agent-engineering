@@ -11,58 +11,65 @@
 
 ## Way of Working
 
-<!-- Project-specific specialisation. Example: -->
-<!-- This monorepo requires package-scoped branch names and a package owner -->
-<!-- review in addition to the team's normal merge policy. -->
+- Contract-first Spec-Driven Development using GitHub Spec Kit ($speckit-specify, $speckit-plan, $speckit-tasks, $speckit-implement).
+- Stage-gated AI-DLC lifecycle with explicit verification gates at each phase transition.
+- Surgical, minimal diffs targeting only explicitly scoped files.
 
 ## Walking Skeleton
 
-<!-- Project-specific specialisation. Example: -->
-<!-- The walking skeleton must exercise the legacy service adapter as well -->
-<!-- as the new service boundary. -->
+- Benchmark runner (`benchmarks/runners/runner.py`) executing isolated Python verification tasks via `TaskEvaluator`.
+- Unified CLI (`scripts/cae_cli.py`) exposing benchmark, test, skill validation, and health checks.
 
 ## Testing Posture
 
-<!-- Project-specific specialisation. -->
+- Strict 4-Tier verification: Unit test suite (`tests/`), Benchmark suite (`benchmarks/tasks/`), Markdown link integrity (`check_links.py`), and Skill schema conformance (`validate_skills.py`).
+- 100% test pass rate required prior to commit or conclusion.
 
 ## Change Control
 
-<!-- Project-specific. Mode: strict or relaxed. Strict here holds for every intent and cannot be changed from chat. -->
+- Mode: strict. All production edits require automated verification evidence.
 
 ## Deployment
 
-<!-- Project-specific specialisation. -->
+- Local pip editable installation (`pip install -e .`) providing `cae` executable.
+- GitHub Actions CI matrix testing Python 3.11, 3.12, 3.13, and 3.14.
 
 ## Code Style
 
-<!-- Project-specific specialisation. -->
+- Standard Python 3 PEP 8 style, strict typing where applicable, explicit exception handling.
+- Deterministic locking and concurrency order to prevent deadlocks and race conditions.
 
 ## Tech Stack
 
-<!-- Technology choices locked for this project. -->
+- Python 3.10+
+- OpenAI Codex CLI >= 0.145.0
+- GitHub Spec Kit (specify 0.16+)
+- AI-DLC 2.9+
+- Pytest >= 7.0 & pytest-asyncio
 
 ## Decided
 
-<!-- Decisions made in earlier stages that should not be re-asked. -->
-<!-- Format: DECIDED: [decision] (Stage [slug], [date]) -->
+- DECIDED: Use dedicated temporary directory isolation for benchmark task evaluation (Stage inception, 2026-09-17)
+- DECIDED: Enforce provenance linking for all architectural patterns in sources/provenance.json (Stage inception, 2026-09-17)
 
 ## Scope Overrides
 
-<!-- Custom scope rules for this project. -->
+- None. Standard root repository boundary applies.
 
 ## Forbidden
 
-<!-- Populated by practices-discovery affirmation gate. -->
-<!-- Format: NEVER [behavior] (affirmed [date]) -->
-<!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
+- NEVER commit code without executing local test suites and verifying exit code 0.
+- NEVER fabricate, manually inflate, or publish unverified benchmark metrics.
+- NEVER claim unsupported OpenAI endorsement or undocumented platform behavior.
+- NEVER place multi-step operational runbooks directly into root AGENTS.md when a specialized Skill is appropriate.
 
 ## Mandated
 
-<!-- Populated by practices-discovery affirmation gate. -->
-<!-- Format: ALWAYS [behavior] (affirmed [date]) -->
-<!-- Example: ALWAYS use Result<T,E> for fallible operations in service layer (affirmed 2026-05-17) -->
+- ALWAYS cite external or empirical provenance in sources/provenance.json when introducing new patterns.
+- ALWAYS enforce the smallest appropriate Codex surface (Prompt vs AGENTS.md vs Skill vs Plugin vs MCP).
+- ALWAYS run `cae doctor` and `pytest` before concluding any turn or releasing a version.
 
 ## Corrections
 
-<!-- Project-specific corrections from human feedback. -->
-<!-- Format: NEVER/ALWAYS [behavior] (learned [date]) -->
+- NEVER omit thread join timeouts or rely on sequential timeouts in multi-threaded concurrency tests.
+- ALWAYS normalize whitespace and handle None values in schema migration parsers.

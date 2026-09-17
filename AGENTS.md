@@ -54,12 +54,14 @@ Use Spec Kit skills located in `.agents/skills/` to enforce contract-first workf
 - `$speckit-implement`: Execute tasks step-by-step with automated verification.
 - `$speckit-converge`: Reconcile implementation state against original specification.
 
+<!-- BEGIN AI-DLC:agents -->
 ### AI-DLC (AI-Driven Development Lifecycle)
 This project is configured with the AI-DLC Codex harness (`aidlc/` and `.codex/`):
 - Run `$aidlc --status` for lifecycle progress.
 - Run `$aidlc compose "<task>"` for customized, gated stage proposals.
 - Run `$aidlc --doctor` to verify framework integrity.
 - Automated sensors enforce document structures (`sensor-required-sections`) and traceability (`sensor-traceability`).
+<!-- END AI-DLC:agents -->
 
 ---
 
