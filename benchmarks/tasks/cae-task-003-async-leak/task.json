@@ -1,9 +1,22 @@
 {
+  "task_id": "cae-task-003-async-leak",
   "id": "cae-task-003-async-leak",
   "title": "Unclosed Resource Leak in Async Stream",
   "category": "reliability",
   "difficulty": "medium",
-  "description": "Ensure async resource handles are deterministically closed even when exceptions occur during streaming.",
+  "language": "python",
+  "description": "Ensure asynchronous stream resources are deterministically closed even when unexpected exceptions occur during chunk processing.",
   "target_file": "stream_processor.py",
-  "test_file": "test_stream_processor.py"
+  "test_file": "test_stream_processor.py",
+  "setup": "Simulate async stream read loop using MockResource with active instance tracking.",
+  "expected_failure": "When an exception occurs during stream consumption, execution aborts before reaching trailing close() calls, leaking the open socket/resource handle.",
+  "success_conditions": "Resource is deterministically closed under all nominal and error conditions using try/finally or an async context manager, leaving 0 active instances.",
+  "forbidden_shortcuts": [
+    "Catching the exception and swallowing it to reach close()",
+    "Setting MockResource.active_instances = 0 directly",
+    "Removing exception generation in stream processing"
+  ],
+  "timeout": 10.0,
+  "deterministic_seed": 42,
+  "evaluation_method": "pytest"
 }

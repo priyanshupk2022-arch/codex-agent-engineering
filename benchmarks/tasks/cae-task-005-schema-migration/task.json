@@ -1,9 +1,22 @@
 {
+  "task_id": "cae-task-005-schema-migration",
   "id": "cae-task-005-schema-migration",
   "title": "Backward-Compatible Schema Parser",
   "category": "data-engineering",
   "difficulty": "medium",
-  "description": "Update user payload parser to accept both legacy full_name and new first_name/last_name fields.",
+  "language": "python",
+  "description": "Implement a backward-compatible user payload parser supporting modern first_name/last_name schemas while gracefully handling legacy full_name payloads.",
   "target_file": "user_parser.py",
-  "test_file": "test_user_parser.py"
+  "test_file": "test_user_parser.py",
+  "setup": "Payload parsing method accepting dictionary inputs across API versions.",
+  "expected_failure": "Legacy parser crashes with KeyError on modern payloads; naive updates to modern schema crash legacy callers relying on full_name.",
+  "success_conditions": "Adapter pattern parses modern and legacy schemas seamlessly, handles multi-part names and whitespace, and raises ValueError for missing names.",
+  "forbidden_shortcuts": [
+    "Dropping legacy schema support",
+    "Returning hardcoded dummy user dictionaries",
+    "Swallowing all exceptions and returning partial dictionaries without validation"
+  ],
+  "timeout": 10.0,
+  "deterministic_seed": 42,
+  "evaluation_method": "pytest"
 }

@@ -44,7 +44,8 @@
             "enum": [
               "vanilla",
               "cae_workflow",
-              "reference"
+              "reference",
+              "buggy"
             ]
           },
           "passed": {
@@ -106,6 +107,21 @@
         },
         "mean_duration_seconds": {
           "type": "number"
+        },
+        "median_duration_seconds": {
+          "type": "number"
+        },
+        "p95_duration_seconds": {
+          "type": "number"
+        },
+        "failure_rate": {
+          "type": "number"
+        },
+        "flake_rate": {
+          "type": "number"
+        },
+        "iterations": {
+          "type": "integer"
         }
       },
       "required": [

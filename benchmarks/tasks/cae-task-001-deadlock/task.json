@@ -1,9 +1,23 @@
 {
+  "task_id": "cae-task-001-deadlock",
   "id": "cae-task-001-deadlock",
   "title": "Concurrency Lock Inversion Deadlock",
   "category": "concurrency",
   "difficulty": "medium",
-  "description": "Fix lock acquisition hierarchy in transfer service to eliminate deterministic deadlock under concurrent load.",
+  "language": "python",
+  "description": "Fix lock acquisition hierarchy in transfer service to eliminate deterministic deadlock under concurrent load and prevent hang on self-transfers.",
   "target_file": "transfer_service.py",
-  "test_file": "test_transfer.py"
+  "test_file": "test_transfer.py",
+  "setup": "Install pytest; initialize Account objects with balances and threading locks.",
+  "expected_failure": "Threads executing concurrent reciprocal transfers (A->B and B->A) deadlock indefinitely due to inconsistent lock acquisition order, and self-transfers deadlock when acquiring the same non-reentrant lock twice.",
+  "success_conditions": "All 20+ concurrent cross-account threads complete within the timeout, self-transfers complete immediately without hang, negative amounts are rejected, and total account balance across the system is strictly conserved.",
+  "forbidden_shortcuts": [
+    "Disabling locks entirely",
+    "Global lock that bottlenecks all concurrent transfers",
+    "Modifying test assertion thresholds or timeouts",
+    "Arbitrary time.sleep() instead of deterministic ordering"
+  ],
+  "timeout": 15.0,
+  "deterministic_seed": 42,
+  "evaluation_method": "pytest"
 }

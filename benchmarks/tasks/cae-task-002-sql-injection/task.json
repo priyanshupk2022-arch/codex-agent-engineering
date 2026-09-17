@@ -1,9 +1,22 @@
 {
+  "task_id": "cae-task-002-sql-injection",
   "id": "cae-task-002-sql-injection",
   "title": "SQL Injection in Product Search",
   "category": "security",
   "difficulty": "medium",
-  "description": "Refactor raw SQL string interpolation in search_products to parameterized queries while supporting queries with single quotes.",
+  "language": "python",
+  "description": "Secure the search_products function against SQL injection vulnerabilities while preserving support for legitimate queries containing apostrophes.",
   "target_file": "product_repo.py",
-  "test_file": "test_product_repo.py"
+  "test_file": "test_product_repo.py",
+  "setup": "SQLite in-memory database with pre-populated products table.",
+  "expected_failure": "Direct string interpolation permits SQL injection payloads (e.g. ' OR 1=1 --) to leak all products and causes SQL syntax errors when searching legitimate terms containing apostrophes (e.g. O'Reilly).",
+  "success_conditions": "Parameterized query binding prevents SQL injection and syntax errors, returns matching products for queries with apostrophes, and passes adversarial injection and schema-probe checks.",
+  "forbidden_shortcuts": [
+    "Naive string replacement query.replace(\"'\", \"\") which breaks apostrophe searches",
+    "Disabling SQL queries and returning hardcoded mock results",
+    "Suppressing SQLite exceptions with broad try/except pass blocks"
+  ],
+  "timeout": 10.0,
+  "deterministic_seed": 42,
+  "evaluation_method": "pytest"
 }

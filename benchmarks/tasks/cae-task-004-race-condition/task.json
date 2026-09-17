@@ -1,9 +1,22 @@
 {
+  "task_id": "cae-task-004-race-condition",
   "id": "cae-task-004-race-condition",
   "title": "Inventory Oversell Race Condition",
   "category": "concurrency",
   "difficulty": "medium",
-  "description": "Synchronize inventory deduction to prevent overselling under high concurrent order volume.",
+  "language": "python",
+  "description": "Fix atomic check-and-decrement in inventory service to prevent race condition overselling under concurrent purchase requests.",
   "target_file": "inventory.py",
-  "test_file": "test_inventory.py"
+  "test_file": "test_inventory.py",
+  "setup": "Initialize InventoryService with limited initial stock.",
+  "expected_failure": "Check condition (self.stock >= quantity) is evaluated outside the critical section, allowing concurrent threads to interleave and oversell inventory below zero.",
+  "success_conditions": "Critical check-and-decrement section is executed atomically under lock, non-positive orders are rejected, and remaining stock never falls below zero.",
+  "forbidden_shortcuts": [
+    "Locking only decrement while leaving check condition unprotected",
+    "Rejecting all concurrent orders blindly",
+    "Disabling concurrency in tests"
+  ],
+  "timeout": 10.0,
+  "deterministic_seed": 42,
+  "evaluation_method": "pytest"
 }
