@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updated_at": "2026-09-17",
   "records": [
     {
@@ -9,6 +9,8 @@
       "url": "https://github.com/openai/codex",
       "codex_version_if_known": ">=0.145.0",
       "retrieved_at": "2026-09-17",
+      "claim_scope": "Headless CLI execution semantics, workspace flags, approval behaviors, and JSON streaming protocols.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Core documentation for OpenAI Codex CLI headless execution, JSON streaming output, and workspace binding.",
       "used_in": [
@@ -23,6 +25,8 @@
       "url": "https://github.com/openai/codex/blob/main/docs/AGENTS.md",
       "codex_version_if_known": ">=0.139.0",
       "retrieved_at": "2026-09-17",
+      "claim_scope": "AGENTS.md file discovery, directory scoping, inheritance, and downward precedence resolution.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Specifies directory-level agent instruction scoping, inheritance rules, and conflict resolution across subdirectories.",
       "used_in": [
@@ -38,6 +42,8 @@
       "url": "https://platform.openai.com/docs/codex/security",
       "codex_version_if_known": ">=0.140.0",
       "retrieved_at": "2026-09-17",
+      "claim_scope": "Sandbox levels (read-only, workspace-write, danger-full-access), approval configurations, and outbound network boundary constraints.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Defines sandbox boundary levels (read-only, workspace-write, danger-full-access) and network egress restrictions.",
       "used_in": [
@@ -53,6 +59,8 @@
       "url": "https://arxiv.org/abs/2310.06770",
       "codex_version_if_known": null,
       "retrieved_at": "2026-09-17",
+      "claim_scope": "Evaluation methodology for autonomous software engineering agents resolving GitHub defects under test harnesses.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Defines the standard methodology for evaluating autonomous software engineering agents on real-world repository defects.",
       "used_in": [
@@ -67,6 +75,8 @@
       "url": "https://arxiv.org/abs/2303.11366",
       "codex_version_if_known": null,
       "retrieved_at": "2026-09-17",
+      "claim_scope": "Episodic memory, dynamic test repair loops, and self-reflection mechanics in code generation agents.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Theoretical and empirical foundation for self-reflection loops, episodic memory, and dynamic test repair in coding agents.",
       "used_in": [
@@ -81,6 +91,8 @@
       "url": "https://arxiv.org/abs/2107.03374",
       "codex_version_if_known": "codex-davinci-002",
       "retrieved_at": "2026-09-17",
+      "claim_scope": "pass@k metric definitions and isolated function-level code synthesis evaluation baselines.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Foundational code synthesis evaluation dataset introducing pass@k metrics for model-generated function completions.",
       "used_in": [
@@ -94,8 +106,10 @@
       "url": "https://github.com/openai/codex/discussions/1042",
       "codex_version_if_known": ">=0.138.0",
       "retrieved_at": "2026-09-17",
-      "confidence": 0.92,
-      "notes": "Empirical practitioner discussion reporting 68% drop in command recall with >4000-line monolithic AGENTS.md in enterprise monorepos.",
+      "claim_scope": "Practitioner qualitative report of degraded rule compliance in large monolithic instruction files.",
+      "verification_status": "COMMUNITY_REPORTED",
+      "confidence": 0.85,
+      "notes": "Community discussion observing reduced command adherence when monolithic AGENTS.md files exceed recommended token budgets.",
       "used_in": [
         "docs/context-engineering/index.md",
         "examples/monorepo-agents-hierarchy/README.md",
@@ -109,8 +123,10 @@
       "url": "https://community.openai.com/t/agent-skills-vs-system-prompt-bloat-patterns/712390",
       "codex_version_if_known": ">=0.142.0",
       "retrieved_at": "2026-09-17",
-      "confidence": 0.95,
-      "notes": "Community consensus and multi-repo benchmarks demonstrating that on-demand skill loading prevents context compaction and dropped test gates.",
+      "claim_scope": "Practitioner observations on context preservation when offloading procedures to on-demand skills.",
+      "verification_status": "COMMUNITY_REPORTED",
+      "confidence": 0.88,
+      "notes": "Community forum thread discussing advantages of packaging procedural instructions as on-demand skills rather than continuous system prompt bloat.",
       "used_in": [
         "docs/context-engineering/index.md",
         "sources/community.md"
@@ -123,8 +139,10 @@
       "url": "https://community.openai.com/t/codex-sandbox-approval-friction-and-developer-ergonomics/745120",
       "codex_version_if_known": ">=0.140.0",
       "retrieved_at": "2026-09-17",
-      "confidence": 0.88,
-      "notes": "Analysis of security degradation when interactive approval prompts exceed 5 per task, leading to reflexive user approvals.",
+      "claim_scope": "Practitioner qualitative analysis of security degradation caused by frequent approval modal prompts.",
+      "verification_status": "COMMUNITY_REPORTED",
+      "confidence": 0.82,
+      "notes": "Field observation regarding reflexive approvals when interactive permission dialogues exceed ergonomic thresholds.",
       "used_in": [
         "docs/security/index.md",
         "sources/community.md"
@@ -133,12 +151,14 @@
     {
       "id": "EXPERIMENT-001",
       "source_type": "experiment",
-      "title": "CAE Empirical Benchmark: Naive Prompting vs Structured Workflows",
+      "title": "CAE Deterministic Benchmark Suite v1: Golden Reference vs Buggy Baselines",
       "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/blob/main/benchmarks/results/summary.md",
       "codex_version_if_known": ">=0.145.0",
       "retrieved_at": "2026-09-17",
-      "confidence": 0.98,
-      "notes": "Controlled empirical experiment across 5 challenging concurrency, isolation, and schema migration tasks (CAE Tasks 001-005).",
+      "claim_scope": "Empirical validation that golden reference implementations pass 100% of adversarial suites while buggy baselines are 100% detected. Agent evaluation is unestablished without local Codex CLI.",
+      "verification_status": "REPRODUCIBLE",
+      "confidence": 1.0,
+      "notes": "Deterministic benchmark across 5 core failure modes (deadlock, SQL injection, async leak, race condition, schema migration). Live agent evaluation layer is structured but marked skipped when Codex binary is absent.",
       "used_in": [
         "benchmarks/README.md",
         "benchmarks/results/summary.md"
@@ -151,6 +171,8 @@
       "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/blob/main/aidlc/spaces/default/memory/project.md",
       "codex_version_if_known": ">=0.145.0",
       "retrieved_at": "2026-09-17",
+      "claim_scope": "Architectural invariants, walking skeleton decisions, and AI-DLC lifecycle specifications.",
+      "verification_status": "VERIFIED",
       "confidence": 1.0,
       "notes": "Primary architectural decisions, walking skeleton invariants, and AI-DLC memory for codex-agent-engineering maintainers.",
       "used_in": [
