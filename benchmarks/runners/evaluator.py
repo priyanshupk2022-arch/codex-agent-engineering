@@ -6,23 +6,31 @@ import tempfile
 import subprocess
 import time
 from pathlib import Path
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 
 class TaskEvaluator:
     @staticmethod
-    def evaluate_task(task_dir: Path, solution_mode: str = "reference") -> Tuple[bool, float, float, str]:
+    def evaluate_task(
+        task_dir: Path,
+        solution_mode: str = "reference",
+        timeout: Optional[float] = None
+    ) -> Tuple[bool, float, float, str]:
         """
         Evaluates a task by copying target implementation into a temporary isolated workspace,
         executing the test file, and measuring pass rate and duration.
         Modes: 'buggy', 'reference', 'fixed'
         Returns: (passed, pass_rate, duration, output_log)
         """
+        if solution_mode not in ("reference", "fixed", "buggy"):
+            raise ValueError(f"Invalid solution mode: '{solution_mode}'. Must be one of: 'reference', 'fixed', 'buggy'")
+
         with open(task_dir / "task.json", "r", encoding="utf8") as f:
             meta = json.load(f)
 
         target_file = meta["target_file"]
         test_file = meta["test_file"]
         stem = Path(target_file).stem
+        task_timeout = float(timeout) if timeout is not None else float(meta.get("timeout", 15.0))
 
         if solution_mode in ("reference", "fixed"):
             candidates = [task_dir / f"{stem}_reference.py", task_dir / f"{stem}_fixed.py"]
@@ -43,7 +51,7 @@ class TaskEvaluator:
             cmd = [sys.executable, "-m", "pytest", str(temp_path / test_file), "-q"]
             start = time.time()
             try:
-                proc = subprocess.run(cmd, cwd=temp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=15)
+                proc = subprocess.run(cmd, cwd=temp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=task_timeout)
                 duration = time.time() - start
                 passed = (proc.returncode == 0)
                 output = proc.stdout + "\n" + proc.stderr
@@ -51,7 +59,7 @@ class TaskEvaluator:
             except subprocess.TimeoutExpired as exc:
                 duration = time.time() - start
                 passed = False
-                output = f"Execution timed out after 15.0s: {exc}"
+                output = f"Execution timed out after {task_timeout}s: {exc}"
                 pass_rate = 0.0
 
             return passed, pass_rate, duration, output

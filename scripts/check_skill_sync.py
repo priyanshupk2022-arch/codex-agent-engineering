@@ -21,6 +21,17 @@ def get_canonical_skills(source_dir: Path) -> List[Path]:
     return sorted([d for d in source_dir.iterdir() if d.is_dir() and (d / "SKILL.md").exists()])
 
 
+IGNORE_NAMES = {"__pycache__", ".DS_Store"}
+
+
+def is_ignored(rel_path: Path) -> bool:
+    """Check if relative path should be ignored (e.g. cache or compiled files)."""
+    for part in rel_path.parts:
+        if part in IGNORE_NAMES or part.endswith(".pyc") or part.endswith(".pyo"):
+            return True
+    return False
+
+
 def sync_skills(source_dir: Path, target_dir: Path) -> None:
     """Project all canonical skills into target directory."""
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -31,7 +42,7 @@ def sync_skills(source_dir: Path, target_dir: Path) -> None:
         dest_dir = target_dir / s_dir.name
         if dest_dir.exists():
             shutil.rmtree(dest_dir)
-        shutil.copytree(s_dir, dest_dir)
+        shutil.copytree(s_dir, dest_dir, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo", ".DS_Store"))
         print(f" [+] Projected: {s_dir.name} -> {dest_dir.relative_to(ROOT_DIR)}")
 
 
@@ -39,9 +50,9 @@ def compare_directories(dir1: Path, dir2: Path) -> Tuple[bool, List[str]]:
     """Recursively compare two directories for byte-identical files."""
     mismatches = []
     
-    # Collect relative files from dir1
-    files1 = {p.relative_to(dir1) for p in dir1.rglob("*") if p.is_file()}
-    files2 = {p.relative_to(dir2) for p in dir2.rglob("*") if p.is_file()}
+    # Collect relative files from dir1, ignoring caches
+    files1 = {p.relative_to(dir1) for p in dir1.rglob("*") if p.is_file() and not is_ignored(p.relative_to(dir1))}
+    files2 = {p.relative_to(dir2) for p in dir2.rglob("*") if p.is_file() and not is_ignored(p.relative_to(dir2))}
 
     missing_in_2 = files1 - files2
     extra_in_2 = files2 - files1

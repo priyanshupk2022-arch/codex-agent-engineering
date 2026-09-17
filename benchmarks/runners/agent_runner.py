@@ -8,6 +8,7 @@ and automated evidence capture (logs, diffs, test metrics).
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import time
@@ -39,6 +40,14 @@ def get_git_commit_sha() -> Optional[str]:
         return res.stdout.strip() if res.returncode == 0 else None
     except Exception:
         return None
+
+
+def safe_rel_path(path: Path, base: Path) -> str:
+    """Safely calculate relative path, falling back to string path if on different drive/subpath."""
+    try:
+        return str(path.relative_to(base)).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
 
 
 def run_agent_evaluation(
@@ -103,6 +112,38 @@ def run_agent_evaluation(
         for t_dir in task_dirs:
             meta = json.loads((t_dir / "task.json").read_text(encoding="utf8"))
             t_id = meta.get("task_id", meta.get("id", t_dir.name))
+            task_eval_dir = runs_base_dir / t_id
+            vanilla_dir = task_eval_dir / "vanilla"
+            cae_dir = task_eval_dir / "cae"
+            vanilla_dir.mkdir(parents=True, exist_ok=True)
+            cae_dir.mkdir(parents=True, exist_ok=True)
+
+            skip_res = {
+                "task_id": t_id,
+                "status": "SKIPPED",
+                "exit_code": None,
+                "passed": False,
+                "test_pass_rate": 0.0,
+                "execution_time_seconds": 0.0,
+                "timed_out": False,
+                "tool_calls": 0,
+                "changed_files": [],
+                "diff": "",
+                "patch_correctness": "UNTESTED",
+                "skip_reason": report["skip_reason"]
+            }
+
+            for agent_d, agent_name in [(vanilla_dir, "vanilla_codex"), (cae_dir, "cae_codex")]:
+                (agent_d / "result.json").write_text(json.dumps({**skip_res, "agent": agent_name}, indent=2), encoding="utf8")
+                (agent_d / "stdout.log").write_text("", encoding="utf8")
+                (agent_d / "stderr.log").write_text(f"AGENT_EVAL_SKIPPED: {report['skip_reason']}\n", encoding="utf8")
+                (agent_d / "diff.patch").write_text("", encoding="utf8")
+                (agent_d / "tests.json").write_text(json.dumps({
+                    "passed": False,
+                    "test_pass_rate": 0.0,
+                    "output": f"Tests skipped: {report['skip_reason']}"
+                }, indent=2), encoding="utf8")
+
             report["tasks"].append({
                 "task_id": t_id,
                 "title": meta.get("title", t_dir.name),
@@ -116,7 +157,7 @@ def run_agent_evaluation(
                     "tool_calls": 0,
                     "changed_files": [],
                     "patch_correctness": "UNTESTED",
-                    "log_path": ""
+                    "log_path": safe_rel_path(vanilla_dir, ROOT_DIR)
                 },
                 "cae": {
                     "status": "SKIPPED",
@@ -128,9 +169,16 @@ def run_agent_evaluation(
                     "tool_calls": 0,
                     "changed_files": [],
                     "patch_correctness": "UNTESTED",
-                    "log_path": ""
+                    "log_path": safe_rel_path(cae_dir, ROOT_DIR)
                 }
             })
+
+        # Ensure top-level vanilla/ and cae/ directories exist per Phase 1-D schema
+        if task_dirs:
+            first_tid = json.loads((task_dirs[0] / "task.json").read_text(encoding="utf8")).get("task_id", task_dirs[0].name)
+            if not (runs_base_dir / "vanilla").exists() and (runs_base_dir / first_tid / "vanilla").exists():
+                shutil.copytree(runs_base_dir / first_tid / "vanilla", runs_base_dir / "vanilla")
+                shutil.copytree(runs_base_dir / first_tid / "cae", runs_base_dir / "cae")
 
         # Save metadata.json
         meta_file = runs_base_dir / "metadata.json"
@@ -154,6 +202,7 @@ def run_agent_evaluation(
         # 1. Vanilla Run
         print(" -> Running Vanilla Codex...")
         vanilla_res = vanilla_agent.run_task(t_dir, vanilla_dir, timeout=timeout)
+        (vanilla_dir / "result.json").write_text(json.dumps(vanilla_res, indent=2), encoding="utf8")
         (vanilla_dir / "stdout.log").write_text(vanilla_res["stdout"], encoding="utf8")
         (vanilla_dir / "stderr.log").write_text(vanilla_res["stderr"], encoding="utf8")
         (vanilla_dir / "diff.patch").write_text(vanilla_res["diff"], encoding="utf8")
@@ -169,6 +218,7 @@ def run_agent_evaluation(
         # 2. CAE Run
         print(" -> Running Codex + CAE Workflow...")
         cae_res = cae_agent.run_task(t_dir, cae_dir, timeout=timeout)
+        (cae_dir / "result.json").write_text(json.dumps(cae_res, indent=2), encoding="utf8")
         (cae_dir / "stdout.log").write_text(cae_res["stdout"], encoding="utf8")
         (cae_dir / "stderr.log").write_text(cae_res["stderr"], encoding="utf8")
         (cae_dir / "diff.patch").write_text(cae_res["diff"], encoding="utf8")
@@ -194,7 +244,7 @@ def run_agent_evaluation(
                 "tool_calls": vanilla_res["tool_calls"],
                 "changed_files": vanilla_res["changed_files"],
                 "patch_correctness": vanilla_res["patch_correctness"],
-                "log_path": str(vanilla_dir.relative_to(ROOT_DIR))
+                "log_path": safe_rel_path(vanilla_dir, ROOT_DIR)
             },
             "cae": {
                 "status": cae_res["status"],
@@ -206,7 +256,7 @@ def run_agent_evaluation(
                 "tool_calls": cae_res["tool_calls"],
                 "changed_files": cae_res["changed_files"],
                 "patch_correctness": cae_res["patch_correctness"],
-                "log_path": str(cae_dir.relative_to(ROOT_DIR))
+                "log_path": safe_rel_path(cae_dir, ROOT_DIR)
             }
         }
         report["tasks"].append(task_summary)
@@ -216,6 +266,13 @@ def run_agent_evaluation(
     report["summary"]["vanilla_pass_rate"] = round(vanilla_passed_count / total_tasks, 4) if total_tasks else 0.0
     report["summary"]["cae_passed"] = cae_passed_count
     report["summary"]["cae_pass_rate"] = round(cae_passed_count / total_tasks, 4) if total_tasks else 0.0
+
+    # Ensure top-level vanilla/ and cae/ directories exist per Phase 1-D schema
+    if task_dirs:
+        first_tid = json.loads((task_dirs[0] / "task.json").read_text(encoding="utf8")).get("task_id", task_dirs[0].name)
+        if not (runs_base_dir / "vanilla").exists() and (runs_base_dir / first_tid / "vanilla").exists():
+            shutil.copytree(runs_base_dir / first_tid / "vanilla", runs_base_dir / "vanilla")
+            shutil.copytree(runs_base_dir / first_tid / "cae", runs_base_dir / "cae")
 
     meta_file = runs_base_dir / "metadata.json"
     meta_file.write_text(json.dumps(report, indent=2), encoding="utf8")

@@ -1,0 +1,5 @@
+{
+  "passed": false,
+  "test_pass_rate": 0.0,
+  "output": "Tests skipped: Codex CLI executable ('codex') not found in system PATH. Live agent evaluation requires OpenAI Codex CLI."
+}

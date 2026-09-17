@@ -1,0 +1,165 @@
+{
+  "run_id": "run-20260917-061005-b18f80",
+  "timestamp": "2026-09-17T06:10:05.952757+00:00",
+  "benchmark_version": "1.0.0",
+  "environment": {
+    "os": "Windows 11",
+    "python_version": "3.14.3",
+    "codex_cli_version": null,
+    "model": "openai.gpt-5.5 (if configured in .codex/config.toml)",
+    "provider": "codex-cli",
+    "git_commit": "10311efcf1664044878df8ed534fe2175f0aeda1"
+  },
+  "status": "AGENT_EVAL_SKIPPED",
+  "skip_reason": "Codex CLI executable ('codex') not found in system PATH. Live agent evaluation requires OpenAI Codex CLI.",
+  "tasks": [
+    {
+      "task_id": "cae-task-001-deadlock",
+      "title": "Concurrency Lock Inversion Deadlock",
+      "vanilla": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-001-deadlock/vanilla"
+      },
+      "cae": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-001-deadlock/cae"
+      }
+    },
+    {
+      "task_id": "cae-task-002-sql-injection",
+      "title": "SQL Injection in Product Search",
+      "vanilla": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-002-sql-injection/vanilla"
+      },
+      "cae": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-002-sql-injection/cae"
+      }
+    },
+    {
+      "task_id": "cae-task-003-async-leak",
+      "title": "Unclosed Resource Leak in Async Stream",
+      "vanilla": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-003-async-leak/vanilla"
+      },
+      "cae": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-003-async-leak/cae"
+      }
+    },
+    {
+      "task_id": "cae-task-004-race-condition",
+      "title": "Inventory Oversell Race Condition",
+      "vanilla": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-004-race-condition/vanilla"
+      },
+      "cae": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-004-race-condition/cae"
+      }
+    },
+    {
+      "task_id": "cae-task-005-schema-migration",
+      "title": "Backward-Compatible Schema Parser",
+      "vanilla": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-005-schema-migration/vanilla"
+      },
+      "cae": {
+        "status": "SKIPPED",
+        "exit_code": null,
+        "passed": false,
+        "test_pass_rate": 0.0,
+        "execution_time_seconds": 0.0,
+        "timed_out": false,
+        "tool_calls": 0,
+        "changed_files": [],
+        "patch_correctness": "UNTESTED",
+        "log_path": "benchmarks/results/runs/run-20260917-061005-b18f80/cae-task-005-schema-migration/cae"
+      }
+    }
+  ],
+  "summary": {
+    "total_tasks": 5,
+    "vanilla_passed": 0,
+    "vanilla_pass_rate": 0.0,
+    "cae_passed": 0,
+    "cae_pass_rate": 0.0,
+    "iterations": 1
+  }
+}

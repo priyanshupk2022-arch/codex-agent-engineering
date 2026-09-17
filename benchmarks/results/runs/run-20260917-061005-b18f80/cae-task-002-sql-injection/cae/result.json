@@ -1,0 +1,15 @@
+{
+  "task_id": "cae-task-002-sql-injection",
+  "status": "SKIPPED",
+  "exit_code": null,
+  "passed": false,
+  "test_pass_rate": 0.0,
+  "execution_time_seconds": 0.0,
+  "timed_out": false,
+  "tool_calls": 0,
+  "changed_files": [],
+  "diff": "",
+  "patch_correctness": "UNTESTED",
+  "skip_reason": "Codex CLI executable ('codex') not found in system PATH. Live agent evaluation requires OpenAI Codex CLI.",
+  "agent": "cae_codex"
+}

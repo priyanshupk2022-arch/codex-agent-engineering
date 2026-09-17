@@ -26,17 +26,18 @@ This ledger records the exact, reproducible execution artifacts and evidence cap
 python -m pytest tests/ -v
 ```
 - **Exit Code**: `0`
-- **Result**: `22 passed in 18.25s`
+- **Result**: `31 passed in 25.19s`
 - **Coverage**:
   - `test_adapter.py`: 2 tests passed (initialization & nonexistent executable handling)
+  - `test_agent_eval.py`: 4 tests passed (Draft-07 schema validation, skipped evaluation file layout, mock execution conformance, forbidden shortcut / test tampering defense)
   - `test_cli.py`: 2 tests passed (CLI commands & validation)
   - `test_evaluator.py`: 2 tests passed (reference & buggy batch evaluations)
-  - `test_metric_collector.py`: 1 test passed (aggregation & summary calculation)
+  - `test_metric_collector.py`: 2 tests passed (aggregation, multi-iteration flakiness rate, median, and p95 metrics)
   - `test_provenance.py`: 1 test passed (11 records with verification_status & claim_scope)
   - `test_skills_schema.py`: 1 test passed (schema conformance across all skills)
   - `test_workflows_integrity.py`: 1 test passed (all 10 workflows define vanilla comparison)
   - `test_security.py`: 5 tests passed (zero secrets, temp workspace isolation, shell=False, config boundaries, path traversal defense)
-  - `test_robustness_and_failures.py`: 7 tests passed (missing binary, agent skip, missing task file, malformed JSON, subprocess timeout, filter empty, skill sync diff)
+  - `test_robustness_and_failures.py`: 11 tests passed (missing binary, agent skip, missing task file, malformed JSON, fast timeout handling, invalid solution mode, corrupted metadata keys, subprocess timeout, interrupted subprocess, filter empty, skill sync diff)
 
 ### Command 2: Deterministic Reference Suite (Multi-Iteration Flakiness Check)
 ```bash

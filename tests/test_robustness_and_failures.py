@@ -71,7 +71,8 @@ def test_evaluator_timeout_handling(tmp_path):
     task_json = tmp_path / "task.json"
     task_json.write_text(json.dumps({
         "target_file": "hang.py",
-        "test_file": "test_hang.py"
+        "test_file": "test_hang.py",
+        "timeout": 0.5
     }), encoding="utf8")
 
     # Write an infinite loop test
@@ -81,15 +82,65 @@ def test_evaluator_timeout_handling(tmp_path):
     hang_ref = tmp_path / "hang_reference.py"
     hang_ref.write_text("# dummy", encoding="utf8")
 
-    # In TaskEvaluator, default timeout is 15s. Let's monkeypatch or run it
-    import benchmarks.runners.evaluator as ev_mod
-    original_eval = TaskEvaluator.evaluate_task
-
-    # Evaluate with low timeout directly
     passed, rate, dur, log = TaskEvaluator.evaluate_task(tmp_path, solution_mode="reference")
     assert passed is False
     assert rate == 0.0
     assert "timed out" in log.lower()
+    assert dur < 5.0
+
+
+def test_evaluator_invalid_solution_mode(tmp_path):
+    """TaskEvaluator must reject unknown solution modes with ValueError."""
+    task_json = tmp_path / "task.json"
+    task_json.write_text(json.dumps({
+        "target_file": "target.py",
+        "test_file": "test_target.py"
+    }), encoding="utf8")
+
+    with pytest.raises(ValueError, match="Invalid solution mode"):
+        TaskEvaluator.evaluate_task(tmp_path, solution_mode="invalid_unsupported_mode")
+
+
+def test_evaluator_corrupted_metadata_missing_keys(tmp_path):
+    """TaskEvaluator must raise KeyError when task.json is missing required keys."""
+    task_json = tmp_path / "task.json"
+    task_json.write_text(json.dumps({"category": "concurrency"}), encoding="utf8")
+
+    with pytest.raises(KeyError):
+        TaskEvaluator.evaluate_task(tmp_path, solution_mode="reference")
+
+
+def test_adapter_subprocess_timeout(tmp_path, monkeypatch):
+    """Adapter must catch subprocess.TimeoutExpired and flag timed_out=True."""
+    adapter = CodexCliAdapter()
+    monkeypatch.setattr(adapter, "is_available", lambda: True)
+
+    def mock_run(*args, **kwargs):
+        raise subprocess.TimeoutExpired(cmd=args[0], timeout=0.1)
+
+    monkeypatch.setattr(subprocess, "run", mock_run)
+    res = adapter.execute_prompt("hang prompt", cwd=tmp_path, timeout=0.1)
+
+    assert res["success"] is False
+    assert res["timed_out"] is True
+    assert res["exit_code"] == -1
+    assert "timed out" in res["error"].lower()
+
+
+def test_adapter_interrupted_subprocess(tmp_path, monkeypatch):
+    """Adapter must catch unexpected OS exceptions during execution without crashing."""
+    adapter = CodexCliAdapter()
+    monkeypatch.setattr(adapter, "is_available", lambda: True)
+
+    def mock_run(*args, **kwargs):
+        raise OSError("Process execution interrupted by signal")
+
+    monkeypatch.setattr(subprocess, "run", mock_run)
+    res = adapter.execute_prompt("test prompt", cwd=tmp_path)
+
+    assert res["success"] is False
+    assert res["exit_code"] == -1
+    assert "interrupted" in res["error"]
 
 
 def test_runner_filter_nonexistent_task():

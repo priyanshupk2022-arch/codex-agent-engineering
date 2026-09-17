@@ -59,8 +59,14 @@ class BaseBenchmarkAgent(abc.ABC):
         self.prepare_workspace(task_dir, workspace_dir, task_meta)
 
         # Snapshot initial state for diff calculation
-        initial_file = workspace_dir / target_file
-        initial_content = initial_file.read_text(encoding="utf8") if initial_file.exists() else ""
+        initial_files: Dict[str, str] = {}
+        for p in workspace_dir.rglob("*"):
+            if p.is_file():
+                rel = str(p.relative_to(workspace_dir)).replace("\\", "/")
+                try:
+                    initial_files[rel] = p.read_text(encoding="utf8", errors="replace")
+                except Exception:
+                    pass
 
         # 2. Check if adapter can execute
         if not self.adapter.is_available():
@@ -78,56 +84,79 @@ class BaseBenchmarkAgent(abc.ABC):
                 "patch_correctness": "UNTESTED",
                 "stdout": "",
                 "stderr": f"Codex CLI executable ('{self.adapter.executable}') not available in PATH.",
-                "test_output": "Tests skipped: Agent executable not found."
+                "test_output": "Tests skipped: Agent executable not found.",
+                "final_state": {}
             }
 
         # 3. Generate prompt & execute agent turn
         prompt = self.generate_prompt(task_meta, workspace_dir)
         exec_res = self.adapter.execute_prompt(prompt, cwd=workspace_dir, timeout=timeout)
 
-        # 4. Measure changes
-        final_file = workspace_dir / target_file
-        final_content = final_file.read_text(encoding="utf8") if final_file.exists() else ""
+        # 4. Measure workspace changes across all files
+        final_files: Dict[str, str] = {}
+        for p in workspace_dir.rglob("*"):
+            if p.is_file():
+                rel = str(p.relative_to(workspace_dir)).replace("\\", "/")
+                try:
+                    final_files[rel] = p.read_text(encoding="utf8", errors="replace")
+                except Exception:
+                    pass
 
         changed_files = []
-        diff_text = ""
-        if initial_content != final_content:
-            changed_files.append(target_file)
-            import difflib
-            diff_lines = difflib.unified_diff(
-                initial_content.splitlines(keepends=True),
-                final_content.splitlines(keepends=True),
-                fromfile=f"a/{target_file}",
-                tofile=f"b/{target_file}"
-            )
-            diff_text = "".join(diff_lines)
+        diff_chunks = []
+        all_keys = sorted(set(initial_files.keys()) | set(final_files.keys()))
+        for k in all_keys:
+            init_c = initial_files.get(k)
+            fin_c = final_files.get(k)
+            if init_c != fin_c:
+                changed_files.append(k)
+                import difflib
+                lines1 = init_c.splitlines(keepends=True) if init_c is not None else []
+                lines2 = fin_c.splitlines(keepends=True) if fin_c is not None else []
+                diff_chunks.extend(difflib.unified_diff(lines1, lines2, fromfile=f"a/{k}", tofile=f"b/{k}"))
+
+        diff_text = "".join(diff_chunks)
+
+        # Check for forbidden shortcut: test tampering
+        test_rel = str(Path(test_file)).replace("\\", "/")
+        test_tampered = (test_rel in changed_files)
 
         # 5. Run test verification on the resulting workspace
         test_path = workspace_dir / test_file
-        cmd = [sys.executable, "-m", "pytest", str(test_path), "-q"]
-        test_start = time.time()
-        try:
-            test_proc = subprocess.run(
-                cmd,
-                cwd=str(workspace_dir),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                timeout=min(timeout, 30.0)
-            )
-            test_passed = (test_proc.returncode == 0)
-            test_rate = 1.0 if test_passed else 0.0
-            test_log = test_proc.stdout + "\n" + test_proc.stderr
-        except subprocess.TimeoutExpired as exc:
+        if test_tampered:
             test_passed = False
             test_rate = 0.0
-            test_log = f"Pytest verification timed out: {exc}"
-        except Exception as exc:
-            test_passed = False
-            test_rate = 0.0
-            test_log = f"Pytest execution error: {exc}"
+            test_log = f"FORBIDDEN_SHORTCUT_DETECTED: Test harness '{test_file}' was modified or deleted by agent."
+            patch_correctness = "FORBIDDEN_SHORTCUT"
+        else:
+            cmd = [sys.executable, "-m", "pytest", str(test_path), "-q"]
+            test_start = time.time()
+            try:
+                test_proc = subprocess.run(
+                    cmd,
+                    cwd=str(workspace_dir),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    timeout=min(timeout, 30.0)
+                )
+                test_passed = (test_proc.returncode == 0)
+                test_rate = 1.0 if test_passed else 0.0
+                test_log = test_proc.stdout + "\n" + test_proc.stderr
+            except subprocess.TimeoutExpired as exc:
+                test_passed = False
+                test_rate = 0.0
+                test_log = f"Pytest verification timed out: {exc}"
+            except Exception as exc:
+                test_passed = False
+                test_rate = 0.0
+                test_log = f"Pytest execution error: {exc}"
 
-        patch_correctness = "CORRECT" if test_passed else ("INCOMPLETE" if changed_files else "FAILED")
+            patch_correctness = "CORRECT" if test_passed else ("INCOMPLETE" if changed_files else "FAILED")
+
+        final_state = {k: final_files[k] for k in changed_files if k in final_files}
+        if target_file in final_files and target_file not in final_state:
+            final_state[target_file] = final_files[target_file]
 
         return {
             "status": "COMPLETED" if not exec_res["timed_out"] else "TIMED_OUT",
@@ -142,5 +171,6 @@ class BaseBenchmarkAgent(abc.ABC):
             "patch_correctness": patch_correctness,
             "stdout": exec_res["stdout"],
             "stderr": exec_res["stderr"],
-            "test_output": test_log
+            "test_output": test_log,
+            "final_state": final_state
         }

@@ -1,6 +1,6 @@
 {
   "suite_version": "1.0.0",
-  "timestamp": "2026-09-17T05:39:18Z",
+  "timestamp": "2026-09-17T06:10:29Z",
   "environment": {
     "os": "Windows 11",
     "python_version": "3.14.3",
@@ -13,13 +13,13 @@
       "mode": "reference",
       "passed": true,
       "test_pass_rate": 1.0,
-      "execution_time_seconds": 1.3848,
+      "execution_time_seconds": 1.3629,
       "iterations": 1,
       "tool_calls": 0,
       "regressions_detected": 0,
       "security_findings_resolved": 0,
       "patch_correctness": "CORRECT",
-      "notes": "Evaluated with exit code 0 in 1.385s"
+      "notes": "Evaluated with exit code 0 in 1.363s"
     },
     {
       "task_id": "cae-task-002-sql-injection",
@@ -27,13 +27,13 @@
       "mode": "reference",
       "passed": true,
       "test_pass_rate": 1.0,
-      "execution_time_seconds": 1.3496,
+      "execution_time_seconds": 1.3233,
       "iterations": 1,
       "tool_calls": 0,
       "regressions_detected": 0,
       "security_findings_resolved": 0,
       "patch_correctness": "CORRECT",
-      "notes": "Evaluated with exit code 0 in 1.35s"
+      "notes": "Evaluated with exit code 0 in 1.323s"
     },
     {
       "task_id": "cae-task-003-async-leak",
@@ -41,13 +41,13 @@
       "mode": "reference",
       "passed": true,
       "test_pass_rate": 1.0,
-      "execution_time_seconds": 1.3462,
+      "execution_time_seconds": 1.3348,
       "iterations": 1,
       "tool_calls": 0,
       "regressions_detected": 0,
       "security_findings_resolved": 0,
       "patch_correctness": "CORRECT",
-      "notes": "Evaluated with exit code 0 in 1.346s"
+      "notes": "Evaluated with exit code 0 in 1.335s"
     },
     {
       "task_id": "cae-task-004-race-condition",
@@ -55,13 +55,13 @@
       "mode": "reference",
       "passed": true,
       "test_pass_rate": 1.0,
-      "execution_time_seconds": 1.405,
+      "execution_time_seconds": 1.3729,
       "iterations": 1,
       "tool_calls": 0,
       "regressions_detected": 0,
       "security_findings_resolved": 0,
       "patch_correctness": "CORRECT",
-      "notes": "Evaluated with exit code 0 in 1.405s"
+      "notes": "Evaluated with exit code 0 in 1.373s"
     },
     {
       "task_id": "cae-task-005-schema-migration",
@@ -69,13 +69,13 @@
       "mode": "reference",
       "passed": true,
       "test_pass_rate": 1.0,
-      "execution_time_seconds": 1.3444,
+      "execution_time_seconds": 1.3223,
       "iterations": 1,
       "tool_calls": 0,
       "regressions_detected": 0,
       "security_findings_resolved": 0,
       "patch_correctness": "CORRECT",
-      "notes": "Evaluated with exit code 0 in 1.344s"
+      "notes": "Evaluated with exit code 0 in 1.322s"
     }
   ],
   "summary": {
@@ -84,9 +84,9 @@
     "pass_rate": 1.0,
     "failure_rate": 0.0,
     "flake_rate": 0.0,
-    "mean_duration_seconds": 1.366,
-    "median_duration_seconds": 1.3496,
-    "p95_duration_seconds": 1.405,
+    "mean_duration_seconds": 1.3432,
+    "median_duration_seconds": 1.3348,
+    "p95_duration_seconds": 1.3729,
     "iterations": 1
   }
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-17T05:46:44.531929+00:00",
+  "timestamp": "2026-09-17T06:15:51.157235+00:00",
   "audit_version": "1.0.0",
   "oss_release_status": "PASS",
   "total_checks": 12,
@@ -33,7 +33,7 @@
     "skills_sync": {
       "passed": true,
       "message": "All canonical skills are in sync with .agents/skills/ projection.",
-      "duration_seconds": 0.028
+      "duration_seconds": 0.031
     },
     "provenance_integrity": {
       "passed": true,
@@ -43,7 +43,7 @@
     "internal_links": {
       "passed": true,
       "message": "All internal markdown links resolved.",
-      "duration_seconds": 0.068
+      "duration_seconds": 0.083
     },
     "ci_configuration": {
       "passed": true,
@@ -58,7 +58,7 @@
     "secrets_scan": {
       "passed": true,
       "message": "Zero secrets or personal API tokens detected in repository.",
-      "duration_seconds": 0.164
+      "duration_seconds": 0.182
     },
     "benchmark_freshness": {
       "passed": true,
@@ -68,7 +68,7 @@
     "unit_tests": {
       "passed": true,
       "message": "Full unit and integration test suite passing (100%).",
-      "duration_seconds": 41.299
+      "duration_seconds": 27.247
     }
   }
 }

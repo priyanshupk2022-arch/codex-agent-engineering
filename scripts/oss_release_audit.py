@@ -150,8 +150,8 @@ def check_benchmark_freshness() -> Tuple[bool, str]:
     content = summary_md.read_text(encoding="utf8")
     if "Generated At" not in content or "Git Commit SHA" not in content:
         return False, "summary.md is missing required provenance generation headers."
-    if "100.0% (5/5)" not in content:
-        return False, "summary.md does not record verified reference pass rate."
+    if "100.0% (" not in content:
+        return False, "summary.md does not record verified reference pass rate (100.0%)."
     return True, "Benchmark summary is fresh and contains execution metadata."
 
 
