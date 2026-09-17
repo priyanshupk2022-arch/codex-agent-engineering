@@ -1,0 +1,9 @@
+{
+  "id": "cae-task-003-async-leak",
+  "title": "Unclosed Resource Leak in Async Stream",
+  "category": "reliability",
+  "difficulty": "medium",
+  "description": "Ensure async resource handles are deterministically closed even when exceptions occur during streaming.",
+  "target_file": "stream_processor.py",
+  "test_file": "test_stream_processor.py"
+}

@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CAEBenchmarkResult",
+  "type": "object",
+  "properties": {
+    "suite_version": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "os": {
+          "type": "string"
+        },
+        "python_version": {
+          "type": "string"
+        },
+        "runner": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "os",
+        "python_version",
+        "runner"
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "vanilla",
+              "cae_workflow",
+              "reference"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "test_pass_rate": {
+            "type": "number"
+          },
+          "execution_time_seconds": {
+            "type": "number"
+          },
+          "iterations": {
+            "type": "integer"
+          },
+          "tool_calls": {
+            "type": "integer"
+          },
+          "regressions_detected": {
+            "type": "integer"
+          },
+          "security_findings_resolved": {
+            "type": "integer"
+          },
+          "patch_correctness": {
+            "type": "string",
+            "enum": [
+              "CORRECT",
+              "INCOMPLETE",
+              "REGRESSION",
+              "FAILED"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "title",
+          "mode",
+          "passed",
+          "test_pass_rate",
+          "execution_time_seconds",
+          "patch_correctness"
+        ]
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total_tasks": {
+          "type": "integer"
+        },
+        "total_passed": {
+          "type": "integer"
+        },
+        "pass_rate": {
+          "type": "number"
+        },
+        "mean_duration_seconds": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "total_tasks",
+        "total_passed",
+        "pass_rate"
+      ]
+    }
+  },
+  "required": [
+    "suite_version",
+    "timestamp",
+    "environment",
+    "tasks",
+    "summary"
+  ]
+}

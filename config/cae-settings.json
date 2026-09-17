@@ -1,0 +1,11 @@
+{
+  "project": "codex-agent-engineering",
+  "version": "0.1.0",
+  "benchmarks": {
+    "suite_version": "1.0.0",
+    "default_timeout_seconds": 30
+  },
+  "skills": {
+    "schema_version": "1.0.0"
+  }
+}

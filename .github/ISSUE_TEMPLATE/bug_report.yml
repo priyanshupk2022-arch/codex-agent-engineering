@@ -1,0 +1,21 @@
+name: Bug Report
+description: Report a defect in CAE tooling, skills, benchmarks, or documentation.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for reporting a defect in Codex Agent Engineering!
+  - type: input
+    id: environment
+    attributes:
+      label: Environment & Versions
+      description: Codex CLI version, OS, Python version.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Defect Description & Reproduction
+      description: Minimal steps to reproduce the failure.
+    validations:
+      required: true

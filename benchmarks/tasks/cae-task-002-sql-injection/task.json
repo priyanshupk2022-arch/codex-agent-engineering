@@ -1,0 +1,9 @@
+{
+  "id": "cae-task-002-sql-injection",
+  "title": "SQL Injection in Product Search",
+  "category": "security",
+  "difficulty": "medium",
+  "description": "Refactor raw SQL string interpolation in search_products to parameterized queries while supporting queries with single quotes.",
+  "target_file": "product_repo.py",
+  "test_file": "test_product_repo.py"
+}

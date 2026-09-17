@@ -1,0 +1,9 @@
+{
+  "id": "cae-task-004-race-condition",
+  "title": "Inventory Oversell Race Condition",
+  "category": "concurrency",
+  "difficulty": "medium",
+  "description": "Synchronize inventory deduction to prevent overselling under high concurrent order volume.",
+  "target_file": "inventory.py",
+  "test_file": "test_inventory.py"
+}

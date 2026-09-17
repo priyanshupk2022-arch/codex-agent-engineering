@@ -1,0 +1,16 @@
+name: Workflow Submission
+description: Propose a new engineering workflow.
+labels: ["workflow", "enhancement"]
+body:
+  - type: input
+    id: workflow_name
+    attributes:
+      label: Workflow Name
+    validations:
+      required: true
+  - type: textarea
+    id: structure
+    attributes:
+      label: Ordered Actions & Verification Gates
+    validations:
+      required: true

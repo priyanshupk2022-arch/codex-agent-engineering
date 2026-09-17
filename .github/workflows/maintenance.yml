@@ -1,0 +1,15 @@
+name: Automated Maintenance Scanner
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Every Monday
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Maintenance Scanner
+        run: |
+          python scripts/maintenance_scanner.py

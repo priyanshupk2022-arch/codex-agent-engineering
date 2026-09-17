@@ -1,0 +1,9 @@
+{
+  "id": "cae-task-005-schema-migration",
+  "title": "Backward-Compatible Schema Parser",
+  "category": "data-engineering",
+  "difficulty": "medium",
+  "description": "Update user payload parser to accept both legacy full_name and new first_name/last_name fields.",
+  "target_file": "user_parser.py",
+  "test_file": "test_user_parser.py"
+}

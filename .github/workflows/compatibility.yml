@@ -1,0 +1,15 @@
+name: Codex Compatibility Probe
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Daily probe
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe Codex Release Matrix
+        run: |
+          python scripts/maintenance_scanner.py --check-compat

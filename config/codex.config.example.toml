@@ -1,0 +1,21 @@
+# Codex CLI Configuration Template (.codex/config.toml)
+# Documentation: docs/fundamentals/codex-surfaces.md
+
+[sandbox]
+mode = "workspace-write" # Options: "read-only", "workspace-write", "danger-full-access"
+allowed_network_hosts = [
+  "github.com",
+  "pypi.org",
+  "registry.npmjs.org"
+]
+
+[approval]
+policy = "on-request" # Options: "on-request", "untrusted", "never"
+
+# Model selection and providers
+model = "gpt-5"
+
+# Optional Model Context Protocol (MCP) Servers
+# [mcp_servers.postgres]
+# command = "npx"
+# args = ["-y", "@modelcontextprotocol/server-postgres", "postgresql://user:pass@localhost:5432/db"]

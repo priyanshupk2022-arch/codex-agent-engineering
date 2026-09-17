@@ -1,0 +1,31 @@
+name: CAE Benchmarks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # Weekly run
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio
+      - name: Run Reference Benchmark
+        run: |
+          python benchmarks/runners/runner.py reference > benchmarks/results/latest-reference.json
+      - name: Run Buggy Benchmark
+        run: |
+          python benchmarks/runners/runner.py buggy > benchmarks/results/latest-buggy.json || true
+      - name: Archive Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmarks/results/*.json

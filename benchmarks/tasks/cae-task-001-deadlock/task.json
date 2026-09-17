@@ -1,0 +1,9 @@
+{
+  "id": "cae-task-001-deadlock",
+  "title": "Concurrency Lock Inversion Deadlock",
+  "category": "concurrency",
+  "difficulty": "medium",
+  "description": "Fix lock acquisition hierarchy in transfer service to eliminate deterministic deadlock under concurrent load.",
+  "target_file": "transfer_service.py",
+  "test_file": "test_transfer.py"
+}

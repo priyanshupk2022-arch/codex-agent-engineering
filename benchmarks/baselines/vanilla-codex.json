@@ -1,0 +1,87 @@
+{
+  "suite_version": "1.0.0",
+  "timestamp": "2026-09-17T04:30:00Z",
+  "environment": {
+    "os": "Windows 11",
+    "python_version": "3.14.3",
+    "runner": "cae-benchmark-runner/1.0.0"
+  },
+  "tasks": [
+    {
+      "task_id": "cae-task-001-deadlock",
+      "title": "Concurrency Lock Inversion Deadlock",
+      "mode": "vanilla",
+      "passed": false,
+      "test_pass_rate": 0.5,
+      "execution_time_seconds": 2.14,
+      "iterations": 2,
+      "tool_calls": 3,
+      "regressions_detected": 1,
+      "security_findings_resolved": 0,
+      "patch_correctness": "INCOMPLETE",
+      "notes": "Vanilla model attempted to reduce sleep delay rather than enforcing lock ordering hierarchy."
+    },
+    {
+      "task_id": "cae-task-002-sql-injection",
+      "title": "SQL Injection in Product Search",
+      "mode": "vanilla",
+      "passed": false,
+      "test_pass_rate": 0.6667,
+      "execution_time_seconds": 1.45,
+      "iterations": 1,
+      "tool_calls": 2,
+      "regressions_detected": 1,
+      "security_findings_resolved": 0,
+      "patch_correctness": "REGRESSION",
+      "notes": "Vanilla model applied naive quote stripping (query.replace(\"'\", \"\")), breaking legitimate search for O'Reilly."
+    },
+    {
+      "task_id": "cae-task-003-async-leak",
+      "title": "Unclosed Resource Leak in Async Stream",
+      "mode": "vanilla",
+      "passed": false,
+      "test_pass_rate": 0.5,
+      "execution_time_seconds": 0.98,
+      "iterations": 1,
+      "tool_calls": 2,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "INCOMPLETE",
+      "notes": "Vanilla model added await res.close() only at end of function, leaking resource on exception."
+    },
+    {
+      "task_id": "cae-task-004-race-condition",
+      "title": "Inventory Oversell Race Condition",
+      "mode": "vanilla",
+      "passed": false,
+      "test_pass_rate": 0.5,
+      "execution_time_seconds": 1.82,
+      "iterations": 2,
+      "tool_calls": 4,
+      "regressions_detected": 1,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Vanilla model placed lock only around stock decrement, leaving read/check window un-synchronized."
+    },
+    {
+      "task_id": "cae-task-005-schema-migration",
+      "title": "Backward-Compatible Schema Parser",
+      "mode": "vanilla",
+      "passed": false,
+      "test_pass_rate": 0.25,
+      "execution_time_seconds": 0.84,
+      "iterations": 1,
+      "tool_calls": 1,
+      "regressions_detected": 3,
+      "security_findings_resolved": 0,
+      "patch_correctness": "REGRESSION",
+      "notes": "Vanilla model updated parser to require new first_name/last_name fields, breaking legacy payloads."
+    }
+  ],
+  "summary": {
+    "total_tasks": 5,
+    "total_passed": 0,
+    "pass_rate": 0.0,
+    "mean_duration_seconds": 1.446
+  }
+}

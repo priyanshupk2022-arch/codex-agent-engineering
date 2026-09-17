@@ -1,0 +1,16 @@
+name: Skill Submission
+description: Propose a new reusable Codex Skill.
+labels: ["skill", "enhancement"]
+body:
+  - type: input
+    id: skill_name
+    attributes:
+      label: Skill Name
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Purpose & Invariants
+    validations:
+      required: true

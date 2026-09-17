@@ -1,0 +1,10 @@
+name: Benchmark Result Submission
+description: Submit empirical benchmark run data.
+labels: ["benchmark", "evidence"]
+body:
+  - type: textarea
+    id: result_json
+    attributes:
+      label: Benchmark Result JSON (from cae benchmark run)
+    validations:
+      required: true

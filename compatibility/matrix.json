@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-09-17T05:00:00Z",
+  "specification_version": "1.0.0",
+  "harnesses": [
+    {
+      "name": "OpenAI Codex CLI",
+      "tested_versions": [
+        "0.139.0",
+        "0.145.0",
+        "0.150.0"
+      ],
+      "recommended_version": ">=0.145.0",
+      "features": {
+        "agents_md_hierarchy": "SUPPORTED",
+        "agents_override_md": "SUPPORTED",
+        "skills_system": "SUPPORTED",
+        "mcp_stdio": "SUPPORTED",
+        "mcp_sse": "SUPPORTED",
+        "sandbox_workspace_write": "SUPPORTED",
+        "approval_on_request": "SUPPORTED",
+        "approval_approve_for_me": "SUPPORTED",
+        "subagent_attribution": "SUPPORTED (>=0.145.0)"
+      },
+      "operating_systems": {
+        "windows_11": "VERIFIED",
+        "macos_sonoma": "VERIFIED",
+        "ubuntu_22_04": "VERIFIED"
+      }
+    },
+    {
+      "name": "GitHub Spec Kit",
+      "tested_versions": [
+        "0.16.5.dev0"
+      ],
+      "features": {
+        "codex_integration": "SUPPORTED",
+        "skills_scaffolding": "SUPPORTED",
+        "task_decomposition": "SUPPORTED"
+      }
+    },
+    {
+      "name": "AI-DLC",
+      "tested_versions": [
+        "2.9.0"
+      ],
+      "features": {
+        "codex_harness": "SUPPORTED",
+        "audit_locking": "SUPPORTED",
+        "sensors_traceability": "SUPPORTED"
+      }
+    }
+  ]
+}

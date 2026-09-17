@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-09-17",
+  "records": [
+    {
+      "id": "OFFICIAL-CODEX-001",
+      "source_type": "official",
+      "title": "OpenAI Codex CLI Specification",
+      "url": "https://github.com/openai/codex",
+      "codex_version": ">=0.145.0",
+      "confidence": 1.0,
+      "used_in": [
+        "docs/fundamentals/codex-surfaces.md",
+        "compatibility/matrix.json"
+      ]
+    },
+    {
+      "id": "OFFICIAL-AGENTS-001",
+      "source_type": "official",
+      "title": "AGENTS.md Specification and Hierarchy",
+      "url": "https://github.com/openai/codex/blob/main/docs/AGENTS.md",
+      "codex_version": ">=0.139.0",
+      "confidence": 1.0,
+      "used_in": [
+        "docs/fundamentals/agents-md-hierarchy.md",
+        "templates/AGENTS.md"
+      ]
+    },
+    {
+      "id": "OFFICIAL-SANDBOX-001",
+      "source_type": "official",
+      "title": "Codex Security & Execution Sandbox Model",
+      "url": "https://platform.openai.com/docs/codex/security",
+      "codex_version": ">=0.140.0",
+      "confidence": 1.0,
+      "used_in": [
+        "docs/fundamentals/sandbox-and-approvals.md",
+        "docs/security/index.md"
+      ]
+    },
+    {
+      "id": "PAPER-SWE-001",
+      "source_type": "paper",
+      "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+      "url": "https://arxiv.org/abs/2310.06770",
+      "confidence": 1.0,
+      "used_in": [
+        "benchmarks/README.md",
+        "benchmarks/metrics/schema.json"
+      ]
+    },
+    {
+      "id": "PAPER-REFLEX-001",
+      "source_type": "paper",
+      "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+      "url": "https://arxiv.org/abs/2303.11366",
+      "confidence": 1.0,
+      "used_in": [
+        "workflows/debugging/workflow.md",
+        "docs/testing/index.md"
+      ]
+    },
+    {
+      "id": "COMMUNITY-001",
+      "source_type": "community",
+      "title": "Monorepo Context Starvation & Compaction Loss",
+      "url": "https://github.com/priyanshupk2022-arch/codex-agent-engineering/sources/community.md#1-monorepo-context-starvation--compaction-loss",
+      "confidence": 0.9,
+      "used_in": [
+        "docs/context-engineering/index.md",
+        "examples/monorepo-agents-hierarchy/README.md"
+      ]
+    }
+  ]
+}
