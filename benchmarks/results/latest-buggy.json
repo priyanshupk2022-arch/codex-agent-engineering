@@ -1,0 +1,92 @@
+{
+  "suite_version": "1.0.0",
+  "timestamp": "2026-09-17T05:39:31Z",
+  "environment": {
+    "os": "Windows 11",
+    "python_version": "3.14.3",
+    "runner": "cae-benchmark-runner/1.0.0"
+  },
+  "tasks": [
+    {
+      "task_id": "cae-task-001-deadlock",
+      "title": "Concurrency Lock Inversion Deadlock",
+      "mode": "buggy",
+      "passed": false,
+      "test_pass_rate": 0.0,
+      "execution_time_seconds": 6.6869,
+      "iterations": 1,
+      "tool_calls": 0,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Evaluated with exit code non-zero in 6.687s"
+    },
+    {
+      "task_id": "cae-task-002-sql-injection",
+      "title": "SQL Injection in Product Search",
+      "mode": "buggy",
+      "passed": false,
+      "test_pass_rate": 0.0,
+      "execution_time_seconds": 1.4747,
+      "iterations": 1,
+      "tool_calls": 0,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Evaluated with exit code non-zero in 1.475s"
+    },
+    {
+      "task_id": "cae-task-003-async-leak",
+      "title": "Unclosed Resource Leak in Async Stream",
+      "mode": "buggy",
+      "passed": false,
+      "test_pass_rate": 0.0,
+      "execution_time_seconds": 1.4443,
+      "iterations": 1,
+      "tool_calls": 0,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Evaluated with exit code non-zero in 1.444s"
+    },
+    {
+      "task_id": "cae-task-004-race-condition",
+      "title": "Inventory Oversell Race Condition",
+      "mode": "buggy",
+      "passed": false,
+      "test_pass_rate": 0.0,
+      "execution_time_seconds": 1.4709,
+      "iterations": 1,
+      "tool_calls": 0,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Evaluated with exit code non-zero in 1.471s"
+    },
+    {
+      "task_id": "cae-task-005-schema-migration",
+      "title": "Backward-Compatible Schema Parser",
+      "mode": "buggy",
+      "passed": false,
+      "test_pass_rate": 0.0,
+      "execution_time_seconds": 1.4102,
+      "iterations": 1,
+      "tool_calls": 0,
+      "regressions_detected": 0,
+      "security_findings_resolved": 0,
+      "patch_correctness": "FAILED",
+      "notes": "Evaluated with exit code non-zero in 1.41s"
+    }
+  ],
+  "summary": {
+    "total_tasks": 5,
+    "total_passed": 0,
+    "pass_rate": 0.0,
+    "failure_rate": 1.0,
+    "flake_rate": 0.0,
+    "mean_duration_seconds": 2.4974,
+    "median_duration_seconds": 1.4709,
+    "p95_duration_seconds": 6.6869,
+    "iterations": 1
+  }
+}

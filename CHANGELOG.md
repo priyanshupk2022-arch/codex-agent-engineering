@@ -6,15 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.1] - 2026-09-17
 ### Fixed & Hardened
-- **Concurrency & Self-Transfer Deadlock**: Fixed fatal single-lock hang on self-transfers in `cae-task-001-deadlock` (`benchmarks/tasks/cae-task-001-deadlock/transfer_service_fixed.py`). Replaced sequential lock acquisition with identity branching and absolute deadline thread joins.
-- **Evaluator Resilience**: Added 15-second subprocess execution timeouts in `benchmarks/runners/evaluator.py` to prevent zombie benchmark hangs.
-- **Race Condition & Validation**: Enforced non-positive order rejection (`quantity <= 0`) in `cae-task-004-race-condition`.
-- **Schema Migration Normalization**: Guarded whitespace splitting and null attributes in `cae-task-005-schema-migration`.
-- **Skills Production Upgrade**: Populated all 9 skills with genuine executable Python automation scripts, multi-phase checklists (>1,300 bytes), and rich sample outputs (>1,100 bytes). Enforced script presence and completeness in `scripts/validate_skills.py`.
-- **Examples Suite**: Upgraded all 4 examples (`full-stack-feature`, `mcp-tool-integration`, `monorepo-agents-hierarchy`, `secure-sandbox-deployment`) with full runnable implementations, configuration manifests, and passing unit test suites (14 tests).
-- **Case Studies 8-Part Expansion**: Rewrote all 3 case studies (`01-legacy-repo-modernization.md`, `02-incident-rca-under-time-pressure.md`, `03-supply-chain-vulnerability-containment.md`) to follow the rigorous 8-part engineering narrative structure with benchmark comparison tables and actionable rules for `AGENTS.md`.
-- **Provenance Integrity**: Audited `sources/provenance.json` to eliminate self-referential URLs, expanded entries to 11 verified records across all taxonomy tiers, and added strict schema assertions in `tests/test_provenance.py`.
-- **AI-DLC Integration**: Enforced AI-DLC block markers (`BEGIN AI-DLC:...` / `END AI-DLC:...`) in `.gitignore` and `AGENTS.md` and populated `aidlc/spaces/default/memory/project.md` with complete decision memory; `aidlc doctor` passes with 0 problems.
+- **Agent Evaluation Architecture**: Implemented `benchmarks/agents/` (`BaseBenchmarkAgent`, `VanillaCodexAgent`, `CaeCodexAgent`) and `benchmarks/runners/agent_runner.py` to execute fair double-track agent comparisons in isolated workspaces with automated diff and log capture.
+- **Truthful Evidence Standards**: Completely eliminated fabricated "0% vs 100%" agent benchmark claims in documentation; clearly distinguished deterministic reference passes (100%), buggy defect detection (100%), and unestablished agent comparisons. Implemented automated skip protocol (`AGENT_EVAL_SKIPPED`) when the local environment lacks `codex`.
+- **Benchmark Task Hardening**: Added `task.json` hardened metadata, `README.md`, `expected_behavior.md`, and adversarial test suites to all 5 tasks (`cae-task-001` through `cae-task-005`). Supported `--iterations N` and flakiness aggregation in `benchmarks/runners/runner.py`.
+- **Automated Report Generation**: Created `scripts/generate_benchmark_report.py` to dynamically compile `benchmarks/results/summary.md` directly from machine-readable benchmark runs.
+- **Skill Contract Decoupling**: Created `docs/skills/contract.md` explicitly separating the Codex-Native discovery layer from the CAE Quality & Rigor Layer.
+- **Skills Projection Synchronization**: Implemented `scripts/check_skill_sync.py` to project canonical `skills/` into `.agents/skills/` and ensure synchronization.
+- **Provenance Taxonomy Hardening**: Updated `sources/provenance.json` with strict `verification_status` (`VERIFIED`, `REPRODUCIBLE`, `COMMUNITY_REPORTED`, `EXPERIMENTAL`, `UNVERIFIED`) and `claim_scope` fields, verified by `tests/test_provenance.py`.
+- **Config Safety & Sandboxing**: Created `.codex/config.example.toml` documenting sandbox modes, network access, approval policies, and headless writable roots; removed machine-specific AWS profiles and unrestricted network permissions from shipped defaults.
+- **Comprehensive CI Matrix**: Enhanced `.github/workflows/ci.yml` to validate core tests, example tests, reference benchmarks, buggy detection, skill schemas, skill sync, link integrity, and automated release audit.
+- **Security & Boundary Test Suite**: Added `tests/test_security.py` covering high-entropy secret scans, temporary directory escape defense, shell=True injection checks, and path traversal protection.
+- **Robustness & Failure Tests**: Added `tests/test_robustness_and_failures.py` covering missing executables, missing files, malformed JSON, subprocess timeouts, and empty filters.
+- **Automated OSS Release Audit**: Created `scripts/oss_release_audit.py` enforcing 12 non-negotiable release criteria; verified status `OSS_RELEASE_STATUS = PASS`.
 
 ## [0.1.0] - 2026-09-17
 ### Added

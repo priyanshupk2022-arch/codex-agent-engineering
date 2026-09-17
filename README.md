@@ -3,7 +3,8 @@
 [![CI](https://github.com/priyanshupk2022-arch/codex-agent-engineering/actions/workflows/ci.yml/badge.svg)](https://github.com/priyanshupk2022-arch/codex-agent-engineering/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Codex CLI](https://img.shields.io/badge/Codex%20CLI-%3E%3D0.145.0-blue)](compatibility/codex/0.145.x.md)
-[![Benchmark Pass](https://img.shields.io/badge/CAE%20Benchmark%20v1-100%25%20Verified-brightgreen)](benchmarks/README.md)
+[![Reference Pass](https://img.shields.io/badge/CAE%20Reference%20Suite-100%25%20Passing-brightgreen)](benchmarks/README.md)
+[![Bug Detection](https://img.shields.io/badge/Buggy%20Detection-100%25%20Verified-brightgreen)](benchmarks/README.md)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-Integrated-purple)](docs/fundamentals/spec-driven-development.md)
 [![AI-DLC](https://img.shields.io/badge/AI--DLC-Integrated-teal)](docs/fundamentals/aidlc-lifecycle.md)
 
@@ -18,9 +19,9 @@
 | **What it is** | A production-grade open-source knowledge base, artifact library, and reproducible benchmark framework for engineering autonomous coding workflows with OpenAI Codex. |
 | **Who it is for** | Staff software engineers, AI architects, DevOps/SRE teams, and open-source maintainers integrating Codex into mission-critical codebases. |
 | **Why it exists** | Generic prompt collections and conversational demos fail in production. Real-world coding agents require strict sandbox boundaries, test-driven verification gates, minimal diff discipline, and reproducible evaluations. |
-| **What you can use** | 9 production Skills (`.agents/skills/`), 10 structured Workflows (`workflows/`), a reproducible 5-task Benchmark Suite (`benchmarks/`), multi-tier AGENTS.md templates (`templates/`), and the `cae` CLI. |
-| **How to start** | Clone the repo, run `python scripts/cae_cli.py doctor`, and try your first benchmark with `python scripts/cae_cli.py benchmark run`. |
-| **Why it is different** | **Evidence-backed & Deterministic.** Every pattern is verified by an automated test or cited paper. Integrates natively with both **GitHub Spec Kit** (Spec-Driven Development) and **AI-DLC** (Enterprise Lifecycle Gates). |
+| **What you can use** | 9 production Skills (`skills/`), projected into `.agents/skills/`, 10 structured Workflows (`workflows/`), a reproducible 5-task Benchmark Suite (`benchmarks/`), multi-tier AGENTS.md templates (`templates/`), and the `cae` CLI. |
+| **How to start** | Clone the repo, run `python scripts/cae_cli.py doctor`, and run the benchmark suite with `python scripts/cae_cli.py benchmark run`. |
+| **Why it is different** | **Evidence-backed & Deterministic.** Every pattern is verified by an automated test or cited paper. Claims strictly reflect genuine execution; no synthetic benchmarks or fake agent runs are reported. |
 
 ---
 
@@ -32,6 +33,7 @@ Choose the learning pathway tailored to your experience level and immediate goal
 ┌─────────────────┐     ┌──────────────────────┐     ┌──────────────────────┐     ┌────────────────────┐
 │   START HERE    │ ──> │   LEARN BY DOING     │ ──> │   REFERENCE DOCS     │ ──> │   BENCHMARKS       │
 │  (Quick Setup)  │     │ (Hands-on Tutorials) │     │ (Architectural Deep) │     │ (Empirical Evid.)  │
+│                 │     │                      │     │                      │     │                    │
 └─────────────────┘     └──────────────────────┘     └──────────────────────┘     └────────────────────┘
 ```
 
@@ -48,6 +50,7 @@ Choose the learning pathway tailored to your experience level and immediate goal
 - [Pull Request Multi-Axis Review Workflow](workflows/pr-review/workflow.md)
 
 ### [Reference (Advanced)](docs/context-engineering/index.md)
+- [Skill Contract: Codex-Native Layer vs CAE Quality Layer](docs/skills/contract.md)
 - [Context Engineering & Anti-Compaction Defense](docs/context-engineering/index.md)
 - [Spec-Driven Development (GitHub Spec Kit)](docs/fundamentals/spec-driven-development.md)
 - [AI-Driven Development Lifecycle (AI-DLC)](docs/fundamentals/aidlc-lifecycle.md)
@@ -56,7 +59,8 @@ Choose the learning pathway tailored to your experience level and immediate goal
 
 ### [Benchmarks & Evidence (Expert)](benchmarks/README.md)
 - [CAE Benchmark Suite v1 Overview](benchmarks/README.md)
-- [Benchmark Results: Vanilla Codex vs CAE Workflows](benchmarks/results/summary.md)
+- [Benchmark Results: Verified Reference & Buggy Baselines](benchmarks/results/summary.md)
+- [Empirical Evidence Ledger](BENCHMARK_EVIDENCE.md)
 - [Empirical Experiments Registry](experiments/README.md)
 - [Codex Compatibility Matrix](compatibility/README.md)
 - [Real-World Case Studies](case-studies/01-legacy-repo-modernization.md)
@@ -69,48 +73,83 @@ Choose the learning pathway tailored to your experience level and immediate goal
 
 ---
 
-## 3. Core Repository Pillars
+## 3. Engineering Rigor & Evidence Classification
 
-```
-codex-agent-engineering/
-├── docs/                 # In-depth architectural guides & engineering disciplines
-│   ├── fundamentals/     # Surfaces, AGENTS.md hierarchy, sandboxes, MCP, Spec Kit, AI-DLC
-│   ├── context-engineering/ # Token budgeting, dynamic retrieval, compaction defense
-│   ├── planning/         # Invariant definition & atomic task decomposition
-│   ├── implementation/   # Minimal diffs & implementation hygiene
-│   ├── debugging/        # 4-phase root cause triangulation loop
-│   ├── testing/          # 4-tier verification gates & anti-cheat isolation
-│   ├── code-review/      # 5-axis automated review framework
-│   ├── security/         # Threat modeling, prompt injection, sandbox escape defense
-│   ├── git/              # Worktree isolation & atomic conventional commits
-│   ├── release-engineering/ # SemVer & automated changelog generation
-│   └── orchestration/    # Single-agent vs subagent boundary rules
-│
-├── skills/               # Reusable Codex skills with executable checklists
-│   ├── repo-audit/       # Structural, architectural, and security reconnaissance
-│   ├── deep-research/    # Evidence-grounded multi-source research briefs
-│   ├── implementation/   # Test-driven minimal-diff code modification
-│   ├── debugging/        # Root-cause diagnosis and regression test authoring
-│   ├── test-engineering/# Boundary analysis, property & stress tests
-│   ├── code-review/      # Multi-axis audit of proposed diffs
-│   ├── security-review/  # OWASP & Agent threat model audit
-│   ├── release-engineering/ # Version bumps, changelogs, tag verification
-│   └── documentation/    # High-fidelity technical writing & sample testing
-│
-├── workflows/            # Structured engineering procedures with Vanilla Codex comparison
-├── benchmarks/           # 5 deterministic tasks, runner, evaluator, and metrics collector
-├── experiments/          # Controlled empirical hypothesis testing registry
-├── case-studies/         # Real-world engineering post-mortems
-├── compatibility/        # Compatibility matrix tracking Codex CLI, OS, and MCP
-├── sources/              # Provenance ledger connecting claims to authoritative sources
-└── scripts/              # cae CLI, skill validator, link checker, maintenance scanner
-```
+In strict adherence to CAE honesty invariants, repository claims are classified across four tiers:
+
+| Tier | Status | Scope & Proof |
+| :--- | :--- | :--- |
+| **WHAT IS VERIFIED** | **VERIFIED (100%)** | • 100% pass rate on the 5-task deterministic reference implementation suite.<br>• 100% bug detection rate across buggy baselines.<br>• 9/9 skills adhering to CAE Quality Contract (`validate_skills.py`).<br>• Zero secret leaks, zero unsafe shell executions, clean sandbox boundaries.<br>• 100% passing test suites across `tests/` and `examples/`. |
+| **WHAT IS REPRODUCIBLE** | **REPRODUCIBLE** | • The complete benchmark suite (`benchmarks/runners/runner.py`) with `--iterations N` flakiness analysis.<br>• Automated report generation (`scripts/generate_benchmark_report.py`).<br>• Automated OSS release audit gate (`scripts/oss_release_audit.py`). |
+| **WHAT IS EXPERIMENTAL** | **EXPERIMENTAL** | • Large-scale MCP server overloading (>8 servers, EXP-003).<br>• Cross-model backend compatibility with non-Codex engines (Claude Code, Gemini CLI). |
+| **WHAT IS PLANNED** | **PLANNED (v0.2.0)** | • Live Codex agent runs in headless CI containers with automated token and latency telemetry.<br>• Expansion of benchmark tasks to TypeScript and Rust runtimes. |
 
 ---
 
-## 4. The Reusable Skills Library
+## 4. How the Benchmark Actually Works
 
-All skills are packaged in `skills/` and adhere to standard `SKILL.md` contracts:
+Unlike static puzzle benchmarks, the CAE evaluation framework runs a fair, double-track evaluation inside isolated temporary workspaces:
+
+```
+                  ┌─────────────────────────────────────┐
+                  │          BENCHMARK TASK             │
+                  │ (task.json, _buggy.py, test_*.py)   │
+                  └──────────────────┬──────────────────┘
+                                     │
+                 ┌───────────────────┴───────────────────┐
+                 ▼                                       ▼
+   ┌───────────────────────────┐           ┌───────────────────────────┐
+   │    ISOLATED WORKSPACE     │           │    ISOLATED WORKSPACE     │
+   │      (Vanilla Track)      │           │        (CAE Track)        │
+   ├───────────────────────────┤           ├───────────────────────────┤
+   │ • Task description        │           │ • Task description        │
+   │ • Buggy target file       │           │ • Buggy target file       │
+   │ • Test harness            │           │ • Test harness            │
+   │ • Vanilla prompt          │           │ • CAE AGENTS.md rules     │
+   │                           │           │ • Relevant CAE Skill      │
+   └─────────────┬─────────────┘           └─────────────┬─────────────┘
+                 │                                       │
+                 ▼                                       ▼
+   ┌───────────────────────────┐           ┌───────────────────────────┐
+   │       VANILLA CODEX       │           │      CODEX + CAE AGENT    │
+   │ (Single-turn prompt exec) │           │ (Evidence-driven repair)  │
+   └─────────────┬─────────────┘           └─────────────┬─────────────┘
+                 │                                       │
+                 ▼                                       ▼
+   ┌───────────────────────────┐           ┌───────────────────────────┐
+   │       VERIFICATION        │           │       VERIFICATION        │
+   │ • Pytest exit code & pass │           │ • Pytest exit code & pass │
+   │ • Git diff & modified f.  │           │ • Git diff & modified f.  │
+   │ • Execution time & stderr │           │ • Execution time & stderr │
+   └─────────────┬─────────────┘           └─────────────┬─────────────┘
+                 │                                       │
+                 └───────────────────┬───────────────────┘
+                                     ▼
+                  ┌─────────────────────────────────────┐
+                  │     EVIDENCE & METRIC ARTIFACTS     │
+                  │ benchmarks/results/runs/<run_id>/   │
+                  │ metadata.json, diff.patch, logs     │
+                  └─────────────────────────────────────┘
+```
+
+### Deterministic Benchmark Status
+
+| Task ID | Failure Domain | Buggy Baseline Detection | Golden Reference Result |
+| :--- | :--- | :--- | :--- |
+| **`cae-task-001-deadlock`** | Concurrency | **DETECTED** (Deadlock on reciprocal & self-transfers) | **PASS** (Hierarchy ordering fixed; 20 threads completed) |
+| **`cae-task-002-sql-injection`** | Security | **DETECTED** (Syntax crash on `O'Reilly`; injection leak) | **PASS** (Parameterized query blocked SQLi, allowed apostrophes) |
+| **`cae-task-003-async-leak`** | Reliability | **DETECTED** (Leaked socket on mid-stream exception) | **PASS** (Structured `try/finally` closed socket under error) |
+| **`cae-task-004-race-condition`** | Concurrency | **DETECTED** (Oversold 38 units; stock dropped to -13) | **PASS** (Atomic transaction lock prevented overselling) |
+| **`cae-task-005-schema-migration`**| Data Eng | **DETECTED** (KeyError crashed modern/legacy callers) | **PASS** (Dual-schema adapter parsed both old and new formats) |
+| **Overall Summary** | **5 Core Tasks** | **100% Detection Rate (5/5)** | **100% Pass Rate (5/5)** |
+
+> **Agent Evaluation Notice**: Live Vanilla vs CAE agent comparison results are **NOT YET ESTABLISHED** on systems lacking a local OpenAI Codex CLI installation. CAE never presents synthetic reference code as a "Codex result". Run `python benchmarks/runners/agent_runner.py` in an environment with the `codex` binary to generate live comparison artifacts.
+
+---
+
+## 5. The Reusable Skills Library
+
+Canonical skills reside in `skills/` and are mirrored to `.agents/skills/` for Codex CLI compatibility. All skills adhere to the [CAE Skill Contract](docs/skills/contract.md):
 
 | Skill | Primary Trigger | Key Deliverable |
 | :--- | :--- | :--- |
@@ -126,33 +165,7 @@ All skills are packaged in `skills/` and adhere to standard `SKILL.md` contracts
 
 ---
 
-## 5. CAE Benchmark Suite v1: Empirical Proof
-
-Unlike synthetic code puzzles, the CAE Benchmark Suite evaluates agents against real-world software engineering failure modes:
-
-| Task ID | Failure Domain | Vanilla Codex Result | Codex + CAE Workflow |
-| :--- | :--- | :--- | :--- |
-| **`cae-task-001-deadlock`** | Concurrency | **FAIL** (Threads deadlocked indefinitely) | **PASS** (Hierarchy ordering fixed; 20 threads completed) |
-| **`cae-task-002-sql-injection`** | Security | **FAIL** (Broke legitimate `O'Reilly` search) | **PASS** (Parameterized query blocked SQLi, allowed apostrophes) |
-| **`cae-task-003-async-leak`** | Reliability | **FAIL** (Leaked socket on exception) | **PASS** (Structured `try/finally` closed socket under error) |
-| **`cae-task-004-race-condition`** | Concurrency | **FAIL** (Oversold 38 units from 20 stock) | **PASS** (Atomic transaction lock prevented overselling) |
-| **`cae-task-005-schema-migration`**| Data Eng | **FAIL** (KeyError crashed legacy callers) | **PASS** (Dual-schema adapter parsed both old and new formats) |
-| **Overall Summary** | **5 Core Tasks** | **0% Pass Rate (0/5)** | **100% Pass Rate (5/5)** |
-
-To reproduce these benchmarks on your local machine:
-```bash
-# Run the CAE reference workflow
-python scripts/cae_cli.py benchmark run --mode reference
-
-# Run the buggy baseline to verify test assertions
-python scripts/cae_cli.py benchmark run --mode buggy
-```
-
----
-
 ## 6. Quickstart: Using the `cae` CLI
-
-Install dependencies and inspect your repository:
 
 ```bash
 # 1. Clone repository
@@ -165,11 +178,11 @@ python scripts/cae_cli.py doctor
 # 3. List available benchmark tasks
 python scripts/cae_cli.py benchmark list
 
-# 4. Run full test suite
-python scripts/cae_cli.py test
+# 4. Run reference benchmark suite
+python scripts/cae_cli.py benchmark run --mode reference
 
-# 5. Validate skills directory
-python scripts/cae_cli.py validate-skills
+# 5. Run full automated OSS release audit
+python scripts/cae_cli.py audit
 ```
 
 ---
@@ -177,15 +190,16 @@ python scripts/cae_cli.py validate-skills
 ## 7. Provenance & Research Grounding
 
 Every factual claim in this repository is tracked in [`sources/provenance.json`](sources/provenance.json). We strictly distinguish between:
-- **Official OpenAI Specifications**: Verified against Codex CLI source code and official OpenAI documentation.
-- **Academic Research**: Grounded in peer-reviewed literature (e.g., *SWE-bench* [Jimenez et al.], *Reflexion* [Shinn et al.], *SWE-agent* [Yang et al.]).
-- **Controlled Experiments**: Recorded in [`experiments/registry/`](experiments/README.md) with full methodology and data.
-- **Community Empirical Findings**: Clearly noted as community observations with reproducible test steps.
+- **Official OpenAI Specifications**: Verified against Codex CLI source code and documentation (`VERIFIED`).
+- **Academic Research**: Grounded in peer-reviewed literature (e.g., *SWE-bench* [Jimenez et al.], *Reflexion* [Shinn et al.], *HumanEval* [Chen et al.]) (`VERIFIED`).
+- **Controlled Experiments**: Recorded in [`experiments/registry/`](experiments/README.md) (`REPRODUCIBLE`).
+- **Community Empirical Findings**: Clearly labeled qualitative field observations (`COMMUNITY_REPORTED`).
 
 ---
 
-## 8. License & Community
+## 8. License & Governance
 
 - Distributed under the **[MIT License](LICENSE)**.
 - Contributions welcome! See **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 - Adheres to the **[Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md)**.
+- Security disclosures: See **[SECURITY.md](SECURITY.md)**.

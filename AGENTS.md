@@ -32,11 +32,17 @@ python benchmarks/runners/runner.py reference
 # 3. Validate Skills schema compliance
 python scripts/validate_skills.py
 
-# 4. Check all internal markdown documentation links
+# 4. Verify Skills projection synchronization
+python scripts/check_skill_sync.py
+
+# 5. Check all internal markdown documentation links
 python scripts/check_links.py
 
-# 5. Check repository health status
+# 6. Check repository health status
 python scripts/cae_cli.py doctor
+
+# 7. Run full automated OSS release audit gate
+python scripts/oss_release_audit.py
 ```
 
 ---
