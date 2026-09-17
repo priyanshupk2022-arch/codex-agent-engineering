@@ -10,13 +10,18 @@ import subprocess
 import json
 
 def cmd_benchmark(args):
+    if args.action == "report":
+        from scripts.generate_benchmark_report import generate_report
+        generate_report(iterations=args.iterations)
+        return
+
     from benchmarks.runners.runner import run_suite
     mode = args.mode or "reference"
     task_filter = args.task
     if not task_filter and args.suite and args.suite not in ("all", "default", "suite-v1"):
         task_filter = args.suite
-    print(f"[*] Running CAE Benchmark Suite ({args.suite or 'default'}) in mode: {mode}")
-    report = run_suite(mode=mode, task_filter=task_filter)
+    print(f"[*] Running CAE Benchmark Suite ({args.suite or 'default'}) in mode: {mode} (iterations={args.iterations})")
+    report = run_suite(mode=mode, task_filter=task_filter, iterations=args.iterations)
     
     if args.output:
         out_path = Path(args.output)
@@ -37,6 +42,15 @@ def cmd_validate_skills(args):
     ok = validate_skills(ROOT / "skills")
     sys.exit(0 if ok else 1)
 
+def cmd_check_skill_sync(args):
+    from scripts.check_skill_sync import check_skill_sync, sync_skills
+    source = ROOT / "skills"
+    target = ROOT / ".agents" / "skills"
+    if getattr(args, "sync", False):
+        sync_skills(source, target)
+    ok = check_skill_sync(source, target)
+    sys.exit(0 if ok else 1)
+
 def cmd_check_links(args):
     from scripts.check_links import check_markdown_links
     ok = check_markdown_links(ROOT)
@@ -54,16 +68,22 @@ def cmd_doctor(args):
         print("[+] All systems green.")
     sys.exit(0 if report['status'] == "HEALTHY" else 1)
 
+def cmd_audit(args):
+    from scripts.oss_release_audit import run_oss_release_audit
+    report = run_oss_release_audit()
+    sys.exit(0 if report["oss_release_status"] == "PASS" else 1)
+
 def main():
     parser = argparse.ArgumentParser(prog="cae", description="Codex Agent Engineering CLI")
     subparsers = parser.add_subparsers(dest="subcommand", help="Available commands")
 
     # benchmark
     bm_parser = subparsers.add_parser("benchmark", help="Run reproducible benchmarks")
-    bm_parser.add_argument("action", choices=["run", "list"], help="Action to perform")
+    bm_parser.add_argument("action", choices=["run", "list", "report"], help="Action to perform")
     bm_parser.add_argument("suite", nargs="?", default="default", help="Suite identifier or task filter (e.g. suite-v1, cae-task-001)")
-    bm_parser.add_argument("--mode", choices=["reference", "buggy"], default="reference", help="Evaluation mode")
+    bm_parser.add_argument("--mode", choices=["reference", "buggy", "agent"], default="reference", help="Evaluation mode")
     bm_parser.add_argument("--task", type=str, default=None, help="Filter by task ID")
+    bm_parser.add_argument("--iterations", "-n", type=int, default=1, help="Number of benchmark iterations")
     bm_parser.add_argument("--output", "-o", type=str, default=None, help="Output JSON path")
 
     # test
@@ -71,13 +91,20 @@ def main():
     t_parser.add_argument("-k", "--filter", type=str, default=None, help="Test filter expression")
 
     # validate-skills
-    subparsers.add_parser("validate-skills", help="Validate skills directory structure")
+    subparsers.add_parser("validate-skills", help="Validate skills directory structure against CAE quality contract")
+
+    # skill-sync
+    ss_parser = subparsers.add_parser("skill-sync", help="Check or sync canonical skills to .agents/skills/ projection")
+    ss_parser.add_argument("--sync", action="store_true", help="Synchronize canonical skills to projection")
 
     # check-links
     subparsers.add_parser("check-links", help="Check markdown internal links")
 
     # doctor
     subparsers.add_parser("doctor", help="Inspect environment and repository health")
+
+    # audit
+    subparsers.add_parser("audit", help="Run full automated OSS release audit gate")
 
     args = parser.parse_args()
 
@@ -87,17 +114,22 @@ def main():
             print(f"Available tasks ({len(tasks)}):")
             for t in tasks:
                 meta = json.loads(t.read_text(encoding="utf8"))
-                print(f" - {meta['id']}: {meta['title']} ({meta['category']})")
+                tid = meta.get("task_id", meta.get("id"))
+                print(f" - {tid}: {meta['title']} ({meta['category']})")
         else:
             cmd_benchmark(args)
     elif args.subcommand == "test":
         cmd_test(args)
     elif args.subcommand == "validate-skills":
         cmd_validate_skills(args)
+    elif args.subcommand == "skill-sync":
+        cmd_check_skill_sync(args)
     elif args.subcommand == "check-links":
         cmd_check_links(args)
     elif args.subcommand == "doctor":
         cmd_doctor(args)
+    elif args.subcommand == "audit":
+        cmd_audit(args)
     else:
         parser.print_help()
 
